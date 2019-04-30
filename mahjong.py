@@ -9,7 +9,7 @@ def chargement_images():
 		tuiles.append(t)
 	return tuiles
 	
-#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
+#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images precharges
 #param L, H la largeur et hauteur d'une tuile
 def generation_tab_fichier(tuile):
