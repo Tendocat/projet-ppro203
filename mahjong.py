@@ -6,24 +6,15 @@ def chargement_images():
 	tuiles = []
 	for k in range(10):
 		print(k)
-		tuile = pygame.image.load(f"{k}.png").convert()#convert_alpha() pour transparence 
-		#tuile.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
+		tuile = pygame.image.load(f"{k}.png").convert_alpha()#convert_alpha() pour transparence 
+		tuile.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
 		tuiles.append(tuile)
 	return tuiles
-	
-#affiche le tableau du mahjong
-def refresh(tableau):
-	#Re-collage
-	#fenetre.blit(fond, (0,0))
-	for ligne in range(len(tableau)):
-		for tuile in tableau[ligne]:
-			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
-	pygame.display.flip() #Rafraichissement
 	
 #return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images precharges
 #param L, H la largeur et hauteur d'une tuile
-def generation_tab_fichier(tuiles, L = 30, H = 60):
+def generation_tab_fichier(tuile, L = 30, H = 60):
 	tableau = []
 	fichier = open('tableau', 'r')
 	for y in range(60, 420, H):
@@ -57,6 +48,28 @@ def generation_tab_fichier(tuiles, L = 30, H = 60):
 		print ("\n\nOn peut comparer les refs de chaque image!!!!\n")
 	return tableau
 	
+#affiche le tableau du mahjong
+def refresh(tableau):
+	#Re-collage
+	#fenetre.blit(fond, (0,0))
+	for ligne in range(len(tableau)):
+		for tuile in tableau[ligne]:
+			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
+	pygame.display.flip() #Rafraichissement
+
+#test si la position est sur une tuile
+def test(x, y, L = 30, H = 60):
+	selection = 0
+	for bout in tableau:
+		if len(bout) > 0:
+			(a, b) = bout[0][1]
+			if x > a and y > b and x < a + L  and y < b + H:
+				selection = bout[0]
+			else:
+				(a, b) = bout[len(bout)-1][1]
+				if x > a and y > b and x < a + L  and y < b + H:
+					selection = bout[len(bout)-1][1]
+	return selection
 pygame.init()
 
 #Ouverture de la fenetre Pygame
@@ -65,8 +78,12 @@ fenetre = pygame.display.set_mode((630, 480))
 #Chargement du tableau ([[tuile, (x,y)]]
 tuile = chargement_images()
 tableau = generation_tab_fichier(tuile)
-
 refresh(tableau)
+
+print (test(125,70))
+
+
+print (tableau[0][0][0].get_size())
 
 #Boucle infinie
 continuer = 1
@@ -74,7 +91,7 @@ while continuer:
 	for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
 		if event.type == QUIT:     #Si un de ces événements est de type QUIT
 			continuer = 0      #On arrête la boucle
-		if event.type == KEYDOWN:
+		if event.type == KEYDOWN:#c'est plutot mouse qu'on veut, mais ça peut servir
 			if event.key == K_SPACE:
 				print("Espace")
 			if event.key == K_RETURN:
