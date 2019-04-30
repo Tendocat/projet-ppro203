@@ -104,9 +104,9 @@ while continuer:
 					print(select)
 					fenetre.blit(select_surface, select)
 					pygame.display.flip()
-				#elif egal(select, event.pos):
-				#	pass
-					#remove tuile et score up et check si il en reste
+				#elif egal(select, event.pos): #remove tuile et score up et check si il en reste comme on cherche les valeurs dans egal, on pourrait tout faire dans egal
+				#	pass #ça sert à écrire des if vides pour les tests
+					
 				else :
 					select = test(event.pos)
 					print(select)
