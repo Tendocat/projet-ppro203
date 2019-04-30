@@ -5,8 +5,7 @@ from pygame.locals import *
 def chargement_images():
 	tuiles = []
 	for k in range(10):
-		print(k)
-		t = pygame.image.load(f"{k}.png").convert()
+		t = pygame.image.load(f"{k}.png").convert()#si arrondis faut prendre de l'exemple pour le transparent
 		tuiles.append(t)
 	return tuiles
 	
@@ -16,11 +15,11 @@ def chargement_images():
 def generation_tab_fichier(tuile):
 	tableau = []
 	fichier = open('tableau', 'r')
-	for y in range(60, 420, HEIGHT):
+	for y in range(HEIGHT, HEIGHT*10, HEIGHT):
 		ligne = fichier.readline()
 		col = 0
 		t = []
-		for x in range(30, 600, WIDTH):
+		for x in range(WIDTH, WIDTH*10, WIDTH):
 			if col < len(ligne) :
 				if ligne[col] == '0':
 					t.append([tuile[0], (x,y)])
@@ -39,7 +38,6 @@ def generation_tab_fichier(tuile):
 				elif ligne[col] == '7':
 					t.append([tuile[7], (x,y)])
 				col += 1
-				print (col)
 		tableau.append(t)
 	fichier.close()
 	print (tableau)
@@ -57,13 +55,14 @@ def refresh(tableau):
 
 #test si la position est sur une tuile
 #return la position (x, y) de la tuile selectionnee
-def test(x, y):
+def test(p):
+	(x, y) = p
 	selection = 0
 	for bout in tableau:
 		if len(bout) > 0:
 			(a, b) = bout[0][1]
 			if x > a and y > b and x < a + WIDTH  and y < b + HEIGHT:
-				selection = bout[0]
+				selection = bout[0][1]
 			else:
 				(a, b) = bout[len(bout)-1][1]
 				if x > a and y > b and x < a + WIDTH  and y < b + HEIGHT:
@@ -77,13 +76,15 @@ fond.fill((100,100,200))#couleur du fond
 
 #Chargement du tableau ([[tuile, (x,y)]]
 tuile = chargement_images()
-(WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles
-WIDTH , HEIGHT = 30, 60#tant que images pas bonnes
+(WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
+WIDTH , HEIGHT = 30, 50#tant que images pas bonnes
 tableau = generation_tab_fichier(tuile)
 refresh(tableau)
 
-print (test(125,70))
-
+#initialisation de l'animation de selection
+select = (-1, -1)
+select_surface = pygame.Surface((WIDTH, HEIGHT))
+select_surface.fill((0,100,200))
 
 print (tableau[0][0][0].get_size())
 
@@ -93,20 +94,33 @@ while continuer:
 	for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
 		if event.type == QUIT:     #Si un de ces événements est de type QUIT
 			continuer = 0      #On arrête la boucle
-		if event.type == KEYDOWN:#c'est plutot mouse qu'on veut, mais ça peut servir
-			if event.key == K_SPACE:
-				print("Espace")
-			if event.key == K_RETURN:
-				print("Entrée")
+		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
+			if event.button == 1:
+				if test(event.pos) == 0 or select == test(event.pos):
+					refresh(tableau)
+					select = (-1, -1)
+				elif(select == (-1, -1)):
+					select = test(event.pos)
+					print(select)
+					fenetre.blit(select_surface, select)
+					pygame.display.flip()
+				#elif egal(select, event.pos):
+				#	pass
+					#remove tuile et score up et check si il en reste
+				else :
+					select = test(event.pos)
+					print(select)
+					refresh(tableau)
+					fenetre.blit(select_surface, select)
+					pygame.display.flip() #Rafraichissement
 
-	
-	
 
-#cours complet :
-#https://openclassrooms.com/fr/courses/1399541-interface-graphique-pygame-pour-python/
-#KEY_ENVENT
-#https://openclassrooms.com/fr/courses/1399541-interface-graphique-pygame-pour-python/1399995-gestion-des-evenements-1#/id/r-1400784
-#MOUSE_EVENT
-#https://openclassrooms.com/fr/courses/1399541-interface-graphique-pygame-pour-python/1399995-gestion-des-evenements-1#/id/r-1399994
-#WINDOWS_EVENT
-#https://openclassrooms.com/fr/courses/1399541-interface-graphique-pygame-pour-python/1400488-gestion-des-evenements-2#/id/r-1400487
+
+
+
+
+
+
+
+print('EXIT')
+
