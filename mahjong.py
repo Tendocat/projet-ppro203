@@ -4,45 +4,50 @@ from pygame.locals import *
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
-	for k in range(26):
-		t = pygame.image.load(f"{k}.png").convert_alpha()#si arrondis faut prendre de l'exemple pour le transparent
+	for k in range(1, 10):#rond de 0 - 8
+		t = pygame.image.load(f"{k}.png").convert_alpha()
 		tuiles.append(t)
+	for k in range(1, 10):#caracteres de 9 - 17
+		t = pygame.image.load(f"{k}a.png").convert_alpha()
+		tuiles.append(t)
+		print(len(tuiles))
+	for k in range(1, 10):#fleur a 18 / carres de 19 - 26
+		t = pygame.image.load(f"{k}b.png").convert_alpha()
+		tuiles.append(t)
+	print(len(tuiles))
 	return tuiles
 	
 #return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images precharges
 #param L, H la largeur et hauteur d'une tuile
-def generation_tab_fichier(tuile):
+def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 	tableau = []
-	fichier = open('tableau', 'r')
-	for y in range(HEIGHT, HEIGHT*10, HEIGHT):
-		ligne = fichier.readline()
-		col = 0
-		t = []
-		for x in range(WIDTH, WIDTH*10, WIDTH):
-			if col < len(ligne) :
-				if ligne[col] == '0':
-					t.append([tuile[0], (x,y)])
-				elif ligne[col] == '1':
-					t.append([tuile[1], (x,y)])
-				elif ligne[col] == '2':
-					t.append([tuile[2], (x,y)])
-				elif ligne[col] == '3':
-					t.append([tuile[3], (x,y)])
-				elif ligne[col] == '4':
-					t.append([tuile[4], (x,y)])
-				elif ligne[col] == '5':
-					t.append([tuile[5], (x,y)])
-				elif ligne[col] == '6':
-					t.append([tuile[6], (x,y)])
-				elif ligne[col] == '7':
-					t.append([tuile[7], (x,y)])
-				col += 1
-		tableau.append(t)
-	fichier.close()
-	print (tableau)
-	if tableau[0][0][0] == tableau [1][3][0]:
-		print ("\n\nOn peut comparer les refs de chaque image!!!!\n")
+	with open(nom_fichier, 'r') as fichier:
+		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
+			ligne = fichier.readline()
+			col = 0
+			t = []
+			for x in range(WIDTH, WIDTH*10, WIDTH):
+				if col < len(ligne) :
+					
+					if ligne[col] == '0':
+						t.append([tuile[0], (x,y)])
+					elif ligne[col] == '1':
+						t.append([tuile[1], (x,y)])
+					elif ligne[col] == '2':
+						t.append([tuile[2], (x,y)])
+					elif ligne[col] == '3':
+						t.append([tuile[3], (x,y)])
+					elif ligne[col] == '4':
+						t.append([tuile[4], (x,y)])
+					elif ligne[col] == '5':
+						t.append([tuile[5], (x,y)])
+					elif ligne[col] == '6':
+						t.append([tuile[6], (x,y)])
+					elif ligne[col] == '7':
+						t.append([tuile[7], (x,y)])
+					col += 1
+			tableau.append(t)
 	return tableau
 	
 #affiche le tableau du mahjong
@@ -106,9 +111,7 @@ refresh(tableau)
 #initialisation de l'animation de selection
 select = (-1, -1)
 select_surface = pygame.Surface((WIDTH, HEIGHT))
-select_surface.fill((0,100,200))
-
-print (tableau[0][0][0].get_size())
+select_surface.fill((255,255, 0))
 
 #Boucle infinie
 continuer = 1
@@ -123,7 +126,6 @@ while continuer:
 					select = (-1, -1)
 				elif(select == (-1, -1)):
 					select = tuile_position(event.pos)
-					print(select)
 					fenetre.blit(select_surface, select)
 					pygame.display.flip()
 				elif egal(select, tuile_position(event.pos)): #remove tuile et score up
@@ -132,10 +134,13 @@ while continuer:
 					for tab in tableau:
 						if tab:
 							continuer=1
+					if continuer == 0: #afficher l'écran de démarrage ou gameover ici
+						tableau = generation_tab_fichier(tuile)
+						select = (-1, -1)
+						continuer = 1
 					refresh(tableau)
 				else :
 					select = tuile_position(event.pos)
-					print(select)
 					refresh(tableau)
 					fenetre.blit(select_surface, select)
 					pygame.display.flip() #Rafraichissement
