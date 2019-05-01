@@ -5,11 +5,11 @@ from pygame.locals import *
 def chargement_images():
 	tuiles = []
 	for k in range(10):
-		t = pygame.image.load(f"{k}.png").convert()#si arrondis faut prendre de l'exemple pour le transparent
+		t = pygame.image.load(f"{k}.png").convert_alpha()#si arrondis faut prendre de l'exemple pour le transparent
 		tuiles.append(t)
 	return tuiles
 	
-#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
+#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images precharges
 #param L, H la largeur et hauteur d'une tuile
 def generation_tab_fichier(tuile):
@@ -55,7 +55,7 @@ def refresh(tableau):
 
 #test si la position est sur une tuile
 #return la position (x, y) de la tuile selectionnee
-def test(p):
+def tuile_position(p):
 	(x, y) = p
 	selection = 0
 	for bout in tableau:
@@ -68,7 +68,29 @@ def test(p):
 				if x > a and y > b and x < a + WIDTH  and y < b + HEIGHT:
 					selection = bout[len(bout)-1][1]
 	return selection
-	
+
+#test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
+#@param deux positions à comparer
+#return true si tuiles égales/ on peut ajouter les familles ici
+def egal(a, b):
+	bool = 0
+	if a == b:
+		bool = 0
+	else:
+		for y in range(len(tableau)):
+			for x in range(len(tableau[y])):
+				if tableau[y][x][1] == a:
+					a = tableau[y][x]
+					y1 = y
+				if tableau[y][x][1] == b:
+					b = tableau[y][x]
+					y2 = y
+		if a[0] == b[0]:
+			bool = 1
+			tableau[y1].remove(a)
+			tableau[y2].remove(b)
+	return bool
+
 pygame.init()
 fenetre = pygame.display.set_mode((630, 480))#Ouverture de la fenetre Pygame
 fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
@@ -77,7 +99,7 @@ fond.fill((100,100,200))#couleur du fond
 #Chargement du tableau ([[tuile, (x,y)]]
 tuile = chargement_images()
 (WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
-WIDTH , HEIGHT = 30, 50#tant que images pas bonnes
+
 tableau = generation_tab_fichier(tuile)
 refresh(tableau)
 
@@ -96,19 +118,24 @@ while continuer:
 			continuer = 0      #On arrête la boucle
 		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 			if event.button == 1:
-				if test(event.pos) == 0 or select == test(event.pos):
+				if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
 					refresh(tableau)
 					select = (-1, -1)
 				elif(select == (-1, -1)):
-					select = test(event.pos)
+					select = tuile_position(event.pos)
 					print(select)
 					fenetre.blit(select_surface, select)
 					pygame.display.flip()
-				#elif egal(select, event.pos): #remove tuile et score up et check si il en reste comme on cherche les valeurs dans egal, on pourrait tout faire dans egal
-				#	pass #ça sert à écrire des if vides pour les tests
-					
+				elif egal(select, tuile_position(event.pos)): #remove tuile et score up
+					#test si chaque ligne est vide
+					continuer = 0
+					for tab in tableau:
+						if tab:
+							continuer=1
+					refresh(tableau)
+					pygame.display.flip() #Rafraichissement
 				else :
-					select = test(event.pos)
+					select = tuile_position(event.pos)
 					print(select)
 					refresh(tableau)
 					fenetre.blit(select_surface, select)
