@@ -8,16 +8,16 @@ def chargement_images():
 		t = pygame.image.load("pics/"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 10):#caracteres de 9 - 17
-		t = pygame.image.load("pics/"+(str)(k)+"a.png").convert_alpha()
+		t = pygame.image.load("pics/a"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 10):#bambous de 18 - 26
-		t = pygame.image.load("pics/"+(str)(k)+"b.png").convert_alpha()
+		t = pygame.image.load("pics/b"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 4):#dragons 27 - 29
-		t = pygame.image.load("pics/"+(str)(k)+"d.png").convert_alpha()
+		t = pygame.image.load("pics/d"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 5):#vents 30 - 33
-		t = pygame.image.load("pics/"+(str)(k)+"v.png").convert_alpha()
+		t = pygame.image.load("pics/v"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	return tuiles
 	
@@ -197,7 +197,7 @@ while continuer:
 					continuer = 0
 					for tab in tableau:
 						if tab:
-							continuer=1
+							continuer = 1
 					if continuer == 0: #afficher l'écran de démarrage ou gameover ici
 						tableau = generation_tab_fichier(tuile)
 						select = (-1, -1)
