@@ -169,20 +169,20 @@ fond.fill((100,100,200))#couleur du fond
 tuile = chargement_images()
 (WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
 
-tableau = generation_tab_fichier(tuile)
-refresh(tableau)
-
 #initialisation de l'animation de selection
-select = (-1, -1)
-select_surface = pygame.Surface((WIDTH, HEIGHT))
-select_surface.fill((255,255, 0))
+select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
-continuer = 1
+continuer, commencer = 1, 1
 while continuer:
-	for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
-		if event.type == QUIT:     #Si un de ces événements est de type QUIT
-			continuer = 0      #On arrête la boucle
+	if commencer:
+		tableau = generation_tab_fichier(tuile)
+		refresh(tableau)
+		select = (-1, -1)
+		commencer = 0
+	for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
+		if event.type == QUIT:	#Si un de ces événements est de type QUIT
+			continuer = 0	#On arrête la boucle
 		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 			if event.button == 1:
 				if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
@@ -194,14 +194,10 @@ while continuer:
 					pygame.display.flip()
 				elif egal(select, tuile_position(event.pos)): #remove tuile et score up
 					#test si chaque ligne est vide
-					continuer = 0
+					commencer = 1
 					for tab in tableau:
 						if tab:
-							continuer = 1
-					if continuer == 0: #afficher l'écran de démarrage ou gameover ici
-						tableau = generation_tab_fichier(tuile)
-						select = (-1, -1)
-						continuer = 1
+							commencer = 0
 					refresh(tableau)
 				else :
 					select = tuile_position(event.pos)
