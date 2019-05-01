@@ -5,13 +5,13 @@ from pygame.locals import *
 def chargement_images():
 	tuiles = []
 	for k in range(1, 10):#cercles de 0 - 8
-		t = pygame.image.load(f"{k}.png").convert_alpha()
+		t = pygame.image.load("pics/"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 10):#caracteres de 9 - 17
-		t = pygame.image.load(f"{k}a.png").convert_alpha()
+		t = pygame.image.load("pics/"+(str)(k)+"a.png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 10):#bambous de 18 - 26
-		t = pygame.image.load(f"{k}b.png").convert_alpha()
+		t = pygame.image.load("pics/"+(str)(k)+"b.png").convert_alpha()
 		tuiles.append(t)
 	return tuiles
 	
