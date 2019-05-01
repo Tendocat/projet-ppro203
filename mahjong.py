@@ -10,11 +10,9 @@ def chargement_images():
 	for k in range(1, 10):#caracteres de 9 - 17
 		t = pygame.image.load(f"{k}a.png").convert_alpha()
 		tuiles.append(t)
-		print(len(tuiles))
 	for k in range(1, 10):#fleur a 18 / carres de 19 - 26
 		t = pygame.image.load(f"{k}b.png").convert_alpha()
 		tuiles.append(t)
-	print(len(tuiles))
 	return tuiles
 	
 #return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
@@ -28,8 +26,7 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 			col = 0
 			t = []
 			for x in range(WIDTH, WIDTH*10, WIDTH):
-				if col < len(ligne) :
-					
+				if col < len(ligne):
 					if ligne[col] == '0':
 						t.append([tuile[0], (x,y)])
 					elif ligne[col] == '1':
@@ -46,6 +43,10 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 						t.append([tuile[6], (x,y)])
 					elif ligne[col] == '7':
 						t.append([tuile[7], (x,y)])
+					elif ligne[col] == '8':
+						t.append([tuile[8], (x,y)])
+					elif ligne[col] == '9':
+						t.append([tuile[9], (x,y)])
 					col += 1
 			tableau.append(t)
 	return tableau
