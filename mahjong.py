@@ -4,7 +4,7 @@ from pygame.locals import *
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
-	for k in range(10):
+	for k in range(26):
 		t = pygame.image.load(f"{k}.png").convert_alpha()#si arrondis faut prendre de l'exemple pour le transparent
 		tuiles.append(t)
 	return tuiles
@@ -133,7 +133,6 @@ while continuer:
 						if tab:
 							continuer=1
 					refresh(tableau)
-					pygame.display.flip() #Rafraichissement
 				else :
 					select = tuile_position(event.pos)
 					print(select)
