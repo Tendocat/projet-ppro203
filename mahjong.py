@@ -13,9 +13,15 @@ def chargement_images():
 	for k in range(1, 10):#bambous de 18 - 26
 		t = pygame.image.load("pics/"+(str)(k)+"b.png").convert_alpha()
 		tuiles.append(t)
+	for k in range(1, 4):#dragons 27 - 29
+		t = pygame.image.load("pics/"+(str)(k)+"d.png").convert_alpha()
+		tuiles.append(t)
+	for k in range(1, 5):#vents 30 - 33
+		t = pygame.image.load("pics/"+(str)(k)+"v.png").convert_alpha()
+		tuiles.append(t)
 	return tuiles
 	
-#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y]] en lisant un fichier contenant les chiffres des images
+#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images precharges
 #param L, H la largeur et hauteur d'une tuile
 def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
@@ -85,6 +91,25 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 							t.append([tuile[25], (x,y)])
 						elif ligne[col] == '9':
 							t.append([tuile[26], (x,y)])
+					elif ligne[col] == 'd':
+						col+=1
+						if ligne[col] == '1':
+							t.append([tuile[27], (x,y)])
+						if ligne[col] == '2':
+							t.append([tuile[28], (x,y)])
+						if ligne[col] == '3':
+							t.append([tuile[29], (x,y)])
+					elif ligne[col] == 'v':
+						col+=1
+						if ligne[col] == '1':
+							t.append([tuile[30], (x,y)])
+						if ligne[col] == '2':
+							t.append([tuile[31], (x,y)])
+						if ligne[col] == '3':
+							t.append([tuile[32], (x,y)])
+						if ligne[col] == '4':
+							t.append([tuile[33], (x,y)])
+							
 					col += 1
 			tableau.append(t)
 	return tableau
