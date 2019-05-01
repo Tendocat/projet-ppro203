@@ -4,13 +4,13 @@ from pygame.locals import *
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
-	for k in range(1, 10):#rond de 0 - 8
+	for k in range(1, 10):#cercles de 0 - 8
 		t = pygame.image.load(f"{k}.png").convert_alpha()
 		tuiles.append(t)
 	for k in range(1, 10):#caracteres de 9 - 17
 		t = pygame.image.load(f"{k}a.png").convert_alpha()
 		tuiles.append(t)
-	for k in range(1, 10):#fleur a 18 / carres de 19 - 26
+	for k in range(1, 10):#bambous de 18 - 26
 		t = pygame.image.load(f"{k}b.png").convert_alpha()
 		tuiles.append(t)
 	return tuiles
@@ -27,26 +27,64 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 			t = []
 			for x in range(WIDTH, WIDTH*10, WIDTH):
 				if col < len(ligne):
-					if ligne[col] == '0':
+					if ligne[col] == '1':
 						t.append([tuile[0], (x,y)])
-					elif ligne[col] == '1':
-						t.append([tuile[1], (x,y)])
 					elif ligne[col] == '2':
-						t.append([tuile[2], (x,y)])
+						t.append([tuile[1], (x,y)])
 					elif ligne[col] == '3':
-						t.append([tuile[3], (x,y)])
+						t.append([tuile[2], (x,y)])
 					elif ligne[col] == '4':
-						t.append([tuile[4], (x,y)])
+						t.append([tuile[3], (x,y)])
 					elif ligne[col] == '5':
-						t.append([tuile[5], (x,y)])
+						t.append([tuile[4], (x,y)])
 					elif ligne[col] == '6':
-						t.append([tuile[6], (x,y)])
+						t.append([tuile[5], (x,y)])
 					elif ligne[col] == '7':
-						t.append([tuile[7], (x,y)])
+						t.append([tuile[6], (x,y)])
 					elif ligne[col] == '8':
-						t.append([tuile[8], (x,y)])
+						t.append([tuile[7], (x,y)])
 					elif ligne[col] == '9':
-						t.append([tuile[9], (x,y)])
+						t.append([tuile[8], (x,y)])
+					elif ligne[col] == 'a':
+						col += 1
+						if ligne[col] == '1':
+							t.append([tuile[9], (x,y)])
+						elif ligne[col] == '2':
+							t.append([tuile[10], (x,y)])
+						elif ligne[col] == '3':
+							t.append([tuile[11], (x,y)])
+						elif ligne[col] == '4':
+							t.append([tuile[12], (x,y)])
+						elif ligne[col] == '5':
+							t.append([tuile[13], (x,y)])
+						elif ligne[col] == '6':
+							t.append([tuile[14], (x,y)])
+						elif ligne[col] == '7':
+							t.append([tuile[15], (x,y)])
+						elif ligne[col] == '8':
+							t.append([tuile[16], (x,y)])
+						elif ligne[col] == '9':
+							t.append([tuile[17], (x,y)])
+					elif ligne[col] == 'b':
+						col += 1
+						if ligne[col] == '1':
+							t.append([tuile[18], (x,y)])
+						elif ligne[col] == '2':
+							t.append([tuile[19], (x,y)])
+						elif ligne[col] == '3':
+							t.append([tuile[20], (x,y)])
+						elif ligne[col] == '4':
+							t.append([tuile[21], (x,y)])
+						elif ligne[col] == '5':
+							t.append([tuile[22], (x,y)])
+						elif ligne[col] == '6':
+							t.append([tuile[23], (x,y)])
+						elif ligne[col] == '7':
+							t.append([tuile[24], (x,y)])
+						elif ligne[col] == '8':
+							t.append([tuile[25], (x,y)])
+						elif ligne[col] == '9':
+							t.append([tuile[26], (x,y)])
 					col += 1
 			tableau.append(t)
 	return tableau
