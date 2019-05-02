@@ -22,8 +22,8 @@ def chargement_images():
 		tuiles.append(t)
 	return tuiles
 	
-#return genere un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
-#param tuiles : le tableau contenant les images precharges
+#return génère un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
+#param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
 def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 	tableau = []
@@ -133,7 +133,7 @@ def refresh(tableau):
 	pygame.display.flip() #Rafraichissement
 
 #test si la position est sur une tuile
-#return la position (x, y) de la tuile selectionnee
+#return la position (x, y) de la tuile selectionnée
 def tuile_position(p):
 	(x, y) = p
 	selection = 0
