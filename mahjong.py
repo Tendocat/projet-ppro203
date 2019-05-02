@@ -175,11 +175,9 @@ fenetre = pygame.display.set_mode((630, 480))#Ouverture de la fenetre Pygame
 fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
 fond.fill((100,100,200))#couleur du fond
 
-#Chargement du tableau ([[tuile, (x,y)]]
+#Chargement des images
 tuile = chargement_images()
 (WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
-
-#initialisation de l'animation de selection
 select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
