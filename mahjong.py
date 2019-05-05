@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from pygame.locals import *
 import time
 
@@ -120,7 +120,12 @@ def refresh_initialiation_de_l_affichage_qui_permet_que_les_tuiles_s_affichent_u
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
-			time.sleep(0.5)
+			for n in range (5):
+				time.sleep(0.1)
+				for event in pygame.event.get():
+					if event.type == QUIT:
+						pygame.quit()
+						sys.exit()
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 			pygame.display.flip() #Rafraichissement	
 	
