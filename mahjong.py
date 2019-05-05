@@ -115,8 +115,8 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 			tableau.append(t)
 	return tableau
 	
-	
-def refresh_initialiation_de_l_affichage_qui_permet_que_les_tuiles_s_affichent_une_par_une_plutot_que_toutes_d_un_coup_car_c_est_plus_joli_comme_ca__nom_temporaire_car_pas_assez_precis__(tableau):
+#refresh initialiation affichage tuiles differe	
+def refresh_initialiation(tableau):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
@@ -190,7 +190,7 @@ continuer, commencer = 1, 1
 while continuer:
 	if commencer:
 		tableau = generation_tab_fichier(tuile)
-		refresh_initialiation_de_l_affichage_qui_permet_que_les_tuiles_s_affichent_une_par_une_plutot_que_toutes_d_un_coup_car_c_est_plus_joli_comme_ca__nom_temporaire_car_pas_assez_precis__(tableau)
+		refresh_initialiation(tableau)
 		select = (-1, -1)
 		commencer = 0
 	for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
