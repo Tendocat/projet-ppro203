@@ -216,7 +216,7 @@ while continuer:
 					select = tuile_position(event.pos)
 					refresh(tableau)
 					fenetre.blit(select_surface, select)
-					pygame.display.flip() #Rafraichissement
+					pygame.display.flip()
 
 
 
