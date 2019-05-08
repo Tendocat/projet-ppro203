@@ -203,6 +203,10 @@ def displayStartmenu():
 	startRect = startSurf.get_rect()
 	startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
 	fenetre.blit(startSurf, startRect)
+	cdSurf = DISPLAYFONT.render('Choose Difficulty', True, WHITE)
+	cdRect = cdSurf.get_rect()
+	cdRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8+22)
+	fenetre.blit(cdSurf, cdRect)
 	pygame.display.flip()
 	while menu :
 		for event in pygame.event.get():
@@ -218,6 +222,8 @@ def displayStartmenu():
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					if (startRect.collidepoint(event.pos)):
+						start()
+					if (cdRect.collidepoint(event.pos)):
 						start()
 					
 
