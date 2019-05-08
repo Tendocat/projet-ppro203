@@ -6,6 +6,10 @@ import time
 WHITE     = (255, 255, 255)
 BLACK     = (  0,   0,   0)
 
+WINDOWWIDTH = 630
+WINDOWHEIGHT = 480
+
+
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
@@ -180,9 +184,10 @@ def egal(a, b):
 	return bool
 
 pygame.init()
-fenetre = pygame.display.set_mode((630, 480))#Ouverture de la fenetre Pygame
+fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
 fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
 fond.fill((100,100,200))#couleur du fond
+DISPLAYFONT = pygame.font.Font('freesansbold.ttf', 18)
 
 #Chargement des images
 tuile = chargement_images()
