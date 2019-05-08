@@ -211,7 +211,7 @@ tuile = chargement_images()
 select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
-continuer, commencer = 1, 1
+commencer = 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
 
@@ -219,7 +219,7 @@ nbclick = 0
 
 nbPaire = 0
 
-while continuer:
+while True:
 	if commencer:
 		tableau = generation_tab_fichier(tuile)
 		refresh_initialiation(tableau)
@@ -238,7 +238,9 @@ while continuer:
 			print('Temps par tuiles : ', tsec/34)
 			print('Nombre de clicks : ', nbclick)
 			print('Nombre de clicks inutiles : ', nbclick-34)
-			continuer = 0	#On arrête la boucle
+			print('EXIT')
+			pygame.quit()
+			sys.exit()	#On arrête la boucle
 		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 			if event.button == 1:
 				if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
@@ -261,13 +263,6 @@ while continuer:
 					refresh(tableau)
 					fenetre.blit(select_surface, select)
 					pygame.display.flip()
-
-
-
-
-
-
-
 
 
 print('EXIT')
