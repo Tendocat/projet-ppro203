@@ -302,6 +302,7 @@ def start():
 	commencer = 1
 	global startmenu
 	global nbclick
+	global nbPaire
 	while True:
 		if startmenu==0 :
 			startmenu = 1
