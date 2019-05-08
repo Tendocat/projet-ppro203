@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import time
-
+import random
 
 
 
@@ -201,13 +201,13 @@ def displayStartmenu():
 	fenetre.fill(RED)
 	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
 	fenetre.blit(mahjongSurf, mahjongRect)
-	startSurf = DISPLAYFONT.render('Start', True, WHITE)
+	startSurf = DISPLAYFONT.render('Start random', True, WHITE)
 	startRect = startSurf.get_rect()
-	startRect.topleft = (WINDOWWIDTH - 100, 7*WINDOWHEIGHT/8-44)
+	startRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-44)
 	fenetre.blit(startSurf, startRect)
-	cdSurf = DISPLAYFONT.render('Choose Difficulty', True, WHITE)
+	cdSurf = DISPLAYFONT.render('Choose level', True, WHITE)
 	cdRect = cdSurf.get_rect()
-	cdRect.topleft = (WINDOWWIDTH - 155, 7*WINDOWHEIGHT/8-22)
+	cdRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-22)
 	fenetre.blit(cdSurf, cdRect)
 	
 	cdminusSurf = DISPLAYFONT.render('-', True, WHITE)
@@ -240,7 +240,7 @@ def displayStartmenu():
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					if (startRect.collidepoint(event.pos)):
-						start(diff)
+						start(random.randint(0, 9))
 					elif (cdRect.collidepoint(event.pos)):
 						start(diff)
 					elif ((cdminusRect.collidepoint(event.pos)) and (diff>0)):
