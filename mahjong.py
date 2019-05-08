@@ -330,7 +330,6 @@ menuRect = 0
 restartRect = 0
 
 def start(level = '0'):
-	print(level)
 	commencer = 1
 	global startmenu
 	global nbclick
@@ -410,7 +409,6 @@ def start(level = '0'):
 										elif (restartRect.collidepoint(event.pos)):
 											start(level)
 										elif (nextlvlRect.collidepoint(event.pos)):
-											print('dfg')
 											start(level)
 											
 							
