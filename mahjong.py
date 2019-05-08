@@ -130,6 +130,7 @@ def refresh_initialiation(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	diplayScore(nbPaire)
+	diplayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			for n in range (5):
@@ -146,6 +147,7 @@ def refresh(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	diplayScore(nbPaire)
+	diplayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
@@ -175,18 +177,40 @@ def diplayScore(nb):
     scoreRect.topleft = (WINDOWWIDTH - 120, 10)
     fenetre.blit(scoreSurf, scoreRect)
 	
+def diplayMenuButton():
+	menuSurf = DISPLAYFONT.render('Menu', True, WHITE)
+	menuRect = menuSurf.get_rect()
+	menuRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
+	fenetre.blit(menuSurf, menuRect)
+	restartSurf = DISPLAYFONT.render('Start Again', True, WHITE)
+	restartRect = restartSurf.get_rect()
+	restartRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
+	fenetre.blit(restartSurf, restartRect)
+	
+	
 	
 def displayStartmenu():
+	menu = 1
 	fenetre.fill(RED)
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
 	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
 	fenetre.blit(mahjongSurf, mahjongRect)
+	startSurf = DISPLAYFONT.render('Start', True, WHITE)
+	startRect = startSurf.get_rect()
+	startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
+	fenetre.blit(startSurf, startRect)
 	pygame.display.flip()
-	time.sleep(2)
+	time.sleep(1)
 	
 	
 """	
+def drawPressKeyMsg():
+    pressKeySurf = BASICFONT.render('Press a key to play.', True, DARKGRAY)
+    pressKeyRect = pressKeySurf.get_rect()
+    pressKeyRect.topleft = (WINDOWWIDTH - 200, WINDOWHEIGHT - 30)
+    DISPLAYSURF.blit(pressKeySurf, pressKeyRect)
+
 def showGameOverScreen():
     gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
     gameSurf = gameOverFont.render('Game', True, WHITE)
