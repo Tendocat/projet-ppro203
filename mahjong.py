@@ -351,7 +351,10 @@ def start():
 						refresh(tableau)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
-
+			if event.type == KEYDOWN:
+				if event.key == pygame.K_s:
+					print('s')
+					start()
 
 	print('EXIT')
 if firsttime:
