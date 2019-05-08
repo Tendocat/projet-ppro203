@@ -201,7 +201,7 @@ while continuer:
 			ttotal = fin-debut #Temps total de la partie en secondes
 			tsec = ttotal
 			tmin = 0 #Temps en minutes
-			while tsec>60
+			while tsec>60:
 				tmin +=1
 				tsec -= 60
 			print('Temps total : ', tmin, 'minutes et ', tsec, 'secondes.')
