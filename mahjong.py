@@ -243,17 +243,22 @@ def displayStartmenu():
 					elif (cdRect.collidepoint(event.pos)):
 						start(diff)
 					elif ((cdminusRect.collidepoint(event.pos)) and (diff>1)):
-						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, BGCOLOR)
+						cddisSurf.fill(RED)
+						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
 						diff-=1
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
+						
 						print(44)
 					elif ((cdplusRect.collidepoint(event.pos)) and (diff<10)):
-						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, BGCOLOR)
+						cddisSurf.fill(RED)
+						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
 						diff+=1
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
 						print(44)
 
