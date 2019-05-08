@@ -225,6 +225,10 @@ def displayStartmenu():
 	cdplusRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cdplusSurf, cdplusRect)
 	
+	editSurf = DISPLAYFONT.render('Level Editor', True, WHITE)
+	editRect = editSurf.get_rect()
+	editRect.topleft = (WINDOWWIDTH - 155 + 12, 7*WINDOWHEIGHT/8+22)
+	fenetre.blit(editSurf, editRect)
 	pygame.display.flip()
 	while menu :
 		for event in pygame.event.get():
@@ -257,6 +261,51 @@ def displayStartmenu():
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
+					elif (editRect.collidepoint(event.pos)):
+						levelEditor()
+
+	
+def levelEditor():
+	fenetre.fill(BLACK)
+	pygame.display.flip()
+	textSurf = pygame.font.Font('freesansbold.ttf', 600).render('#', True, WHITE)
+	textSurf.fill(WHITE)
+	textRect = textSurf.get_rect()
+	textRect.midtop = (WINDOWWIDTH/5 , WINDOWHEIGHT/5)
+	fenetre.blit(textSurf, textRect)
+	pygame.display.update(textRect)
+	
+	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
+	cancelRect = cancelSurf.get_rect()
+	cancelRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	fenetre.blit(cancelSurf, cancelRect)
+	
+	savSurf = DISPLAYFONT.render('+', True, WHITE)
+	savRect = savSurf.get_rect()
+	savRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	fenetre.blit(savSurf, savRect)
+	pygame.display.flip()
+	#fenetre.blit(mahjongSurf, mahjongRect)
+	while True :
+		for event in pygame.event.get():
+			if event.type == KEYDOWN:
+				if event.key == pygame.K_s:
+					displayStartmenu()
+			if event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					if (cancelRect.collidepoint(event.pos)):
+						displayStartmenu()
+					if (saveRect.collidepoint(event.pos)):
+						pass
+			if event.type == QUIT:
+				pygame.exit()
+				system.close()
+
+
+
+
+
+
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
@@ -303,6 +352,10 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	pygame.display.flip()
 	nbPaire=0
 
+
+
+	
+	
 def start(level = '0'):
 	commencer = 1
 	global startmenu
