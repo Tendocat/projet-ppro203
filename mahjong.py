@@ -410,10 +410,9 @@ DISPLAYFONT = pygame.font.Font('freesansbold.ttf', 18)
 
 #Chargement des images
 tuile = chargement_images()
-(WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
+(WIDTH, HEIGHT) = tuile[0].get_size()	#setup des constantes de la largeur et hauteur des tuiles en fonction des images
 select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
-#Boucle infinie
 startmenu = 0
 
 nbclick = 0
