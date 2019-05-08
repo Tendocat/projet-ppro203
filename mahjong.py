@@ -190,19 +190,34 @@ def diplayMenuButton():
 	
 	
 def displayStartmenu():
+	global startmenu
 	menu = 1
-	fenetre.fill(RED)
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
-	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
-	fenetre.blit(mahjongSurf, mahjongRect)
-	startSurf = DISPLAYFONT.render('Start', True, WHITE)
-	startRect = startSurf.get_rect()
-	startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
-	fenetre.blit(startSurf, startRect)
-	pygame.display.flip()
-	time.sleep(1)
-	
+	while menu :
+		fenetre.fill(RED)
+		mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
+		fenetre.blit(mahjongSurf, mahjongRect)
+		startSurf = DISPLAYFONT.render('Start', True, WHITE)
+		startRect = startSurf.get_rect()
+		startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
+		fenetre.blit(startSurf, startRect)
+		pygame.display.flip()
+		for event in pygame.event.get():
+			if event.type == KEYDOWN:
+				if event.key == pygame.K_s:
+					print('s')
+					start()
+				if event.key == pygame.K_m:
+					startmenu = 0
+					start()
+			if event.type == QUIT:
+				pygame.quit()
+				sys.exit()
+			if event.type == MOUSEBUTTONDOWN:
+				if event.button == 1:
+					print('s')
+					start()
 	
 """	
 def drawPressKeyMsg():
@@ -277,62 +292,68 @@ select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
 startmenu = 0
-commencer = 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
-
-
-
 nbPaire = 0
 
-while True:
-	if startmenu==0 :
-		displayStartmenu()
-		startmenu = 1
-	if commencer:
-		tableau = generation_tab_fichier(tuile)
-		refresh_initialiation(tableau)
-		select = (-1, -1)
-		commencer = 0
-	for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
-		if event.type == QUIT:	#Si un de ces événements est de type QUIT
-			fin = time.time() #Temps de fin de la partie
-			ttotal = fin-debut #Temps total de la partie en secondes
-			tsec = ttotal
-			tmin = 0 #Temps en minutes
-			while tsec>60:
-				tmin +=1
-				tsec -= 60
-			print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
-			print('Temps par tuiles : ', tsec/34)
-			print('Nombre de clicks : ', nbclick)
-			print('Nombre de clicks inutiles : ', nbclick-34)
-			print('EXIT')
-			pygame.quit()
-			sys.exit()	#On arrête la boucle
-		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
-			if event.button == 1:
-				if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
-					refresh(tableau)
-					select = (-1, -1)
-					nbclick += 1
-				elif(select == (-1, -1)):
-					select = tuile_position(event.pos)
-					fenetre.blit(select_surface, select)
-					pygame.display.flip()
-				elif egal(select, tuile_position(event.pos)): #remove tuile et score up
-					#test si chaque ligne est vide
-					commencer = 1
-					for tab in tableau:
-						if tab:
-							commencer = 0
-					refresh(tableau)
-				else :
-					select = tuile_position(event.pos)
-					refresh(tableau)
-					fenetre.blit(select_surface, select)
-					pygame.display.flip()
+firsttime=1
+
+def start():
+	commencer = 1
+	global startmenu
+	while True:
+		if startmenu==0 :
+			startmenu = 1
+			displayStartmenu()
+		if commencer:
+			tableau = generation_tab_fichier(tuile)
+			refresh_initialiation(tableau)
+			select = (-1, -1)
+			commencer = 0
+		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
+			if event.type == QUIT:	#Si un de ces événements est de type QUIT
+				fin = time.time() #Temps de fin de la partie
+				ttotal = fin-debut #Temps total de la partie en secondes
+				tsec = ttotal
+				tmin = 0 #Temps en minutes
+				while tsec>60:
+					tmin +=1
+					tsec -= 60
+				print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
+				print('Temps par tuiles : ', tsec/34)
+				print('Nombre de clicks : ', nbclick)
+				print('Nombre de clicks inutiles : ', nbclick-34)
+				print('EXIT')
+				pygame.quit()
+				sys.exit()	#On arrête la boucle
+			if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
+				if event.button == 1:
+					if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
+						refresh(tableau)
+						select = (-1, -1)
+						nbclick += 1
+					elif(select == (-1, -1)):
+						select = tuile_position(event.pos)
+						fenetre.blit(select_surface, select)
+						pygame.display.flip()
+					elif egal(select, tuile_position(event.pos)): #remove tuile et score up
+						#test si chaque ligne est vide
+						commencer = 1
+						for tab in tableau:
+							if tab:
+								commencer = 0
+						refresh(tableau)
+					else :
+						select = tuile_position(event.pos)
+						refresh(tableau)
+						fenetre.blit(select_surface, select)
+						pygame.display.flip()
 
 
-print('EXIT')
-
+	print('EXIT')
+if firsttime:
+	print(firsttime)
+	print('weird')
+	firsttime = 0
+	start()
+	
