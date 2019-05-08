@@ -321,10 +321,6 @@ def start():
 				while tsec>60:
 					tmin +=1
 					tsec -= 60
-				print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
-				print('Temps par tuiles : ', tsec/34)
-				print('Nombre de clicks : ', nbclick)
-				print('Nombre de clicks inutiles : ', nbclick-34)
 				print('EXIT')
 				pygame.quit()
 				sys.exit()	#On arrête la boucle
@@ -340,10 +336,13 @@ def start():
 						pygame.display.flip()
 					elif egal(select, tuile_position(event.pos, tableau), tableau): #remove tuile et score up
 						#test si chaque ligne est vide
-						commencer = 1
 						for tab in tableau:
 							if tab:
-								commencer = 0
+								print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
+								print('Temps par tuiles : ', tsec/34)
+								print('Nombre de clicks : ', nbclick)
+								print('Nombre de clicks inutiles : ', nbclick-34)
+								nbPaire=0
 						refresh(tableau)
 					else :
 						select = tuile_position(event.pos, tableau)
