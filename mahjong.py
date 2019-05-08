@@ -133,7 +133,7 @@ def refresh_initialiation(tableau):
 	displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
-			for n in range (5):
+			for n in range (4):
 				time.sleep(0.1)
 				for event in pygame.event.get():
 					if event.type == QUIT:
@@ -178,6 +178,8 @@ def displayScore(nb):
     fenetre.blit(scoreSurf, scoreRect)
 	
 def displayMenuButton():
+	global menuRect
+	global restartRect
 	menuSurf = DISPLAYFONT.render('Menu', True, WHITE)
 	menuRect = menuSurf.get_rect()
 	menuRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
@@ -206,7 +208,6 @@ def displayStartmenu():
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
-					print('s')
 					start()
 				if event.key == pygame.K_m:
 					startmenu = 0
@@ -216,9 +217,9 @@ def displayStartmenu():
 				sys.exit()
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
-					print('s')
-					start()
-	
+					if (startRect.collidepoint(event.pos)):
+						start()
+					
 """	
 def drawPressKeyMsg():
     pressKeySurf = BASICFONT.render('Press a key to play.', True, DARKGRAY)
@@ -296,6 +297,8 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	fenetre.blit(nbciSurf, nbciRect)
 	pygame.display.flip()
 	nbPaire=0
+
+
 	
 pygame.init()
 pygame.display.set_caption('mahjong')
@@ -317,17 +320,23 @@ nbPaire = 0
 
 firsttime=1
 
+
+menuRect = 0
+restartRect = 0
+
 def start():
 	commencer = 1
 	global startmenu
 	global nbclick
 	global nbPaire
+	global menuRect
+	global restartRect
+	nbPaire = 0
 	while True:
 		if startmenu==0 :
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			print('com')
 			tableau = generation_tab_fichier(tuile)
 			refresh_initialiation(tableau)
 			select = (-1, -1)
@@ -339,7 +348,13 @@ def start():
 				sys.exit()	#On arrête la boucle
 			if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 				if event.button == 1:
-					if tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
+					if (menuRect.collidepoint(event.pos)):
+						startmenu = 0
+						time.sleep(0.2)
+						start()
+					elif (restartRect.collidepoint(event.pos)):
+						start()
+					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						refresh(tableau)
 						select = (-1, -1)
 						nbclick += 1
@@ -387,7 +402,6 @@ def start():
 						pygame.display.flip()
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
-					print('s')
 					start()
 				if event.key == pygame.K_m:
 					startmenu = 0
@@ -395,8 +409,6 @@ def start():
 
 	print('EXIT')
 if firsttime:
-	print(firsttime)
-	print('weird')
 	firsttime = 0
 	start()
 	
