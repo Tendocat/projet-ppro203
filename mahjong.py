@@ -199,12 +199,15 @@ while continuer:
 		if event.type == QUIT:	#Si un de ces événements est de type QUIT
 			fin = time.time() #Temps de fin de la partie
 			ttotal = fin-debut #Temps total de la partie en secondes
+			tsec = ttotal
 			tmin = 0 #Temps en minutes
-			while ttotal>60
+			while tsec>60
 				tmin +=1
-				ttotal -= 60
-			print('Temps total : ', tmin, 'minutes et ', ttotal, 'secondes.')
-			print('Nombre de clicks : ', nbclick) 
+				tsec -= 60
+			print('Temps total : ', tmin, 'minutes et ', tsec, 'secondes.')
+			print('Temps par tuiles : ', tsec/34)
+			print('Nombre de clicks : ', nbclick)
+			print('Nombre de clicks inutiles : ', nbclick-34)
 			continuer = 0	#On arrête la boucle
 		if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 			if event.button == 1:
