@@ -329,10 +329,11 @@ def start():
 						pygame.display.flip()
 					elif egal(select, tuile_position(event.pos, tableau), tableau): #remove tuile et score up
 						#test si chaque ligne est vide
+						over = 1
 						for tab in tableau:
 							if tab:
-								pass
-						else :
+								over = 0
+						if over :
 							fin = time.time() #Temps de fin de la partie
 							ttotal = fin-debut #Temps total de la partie en secondes
 							tsec = ttotal
