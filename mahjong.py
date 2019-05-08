@@ -357,6 +357,9 @@ def start():
 				if event.key == pygame.K_s:
 					print('s')
 					start()
+				if event.key == pygame.K_m:
+					startmenu = 0
+					start()
 
 	print('EXIT')
 if firsttime:
