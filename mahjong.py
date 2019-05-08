@@ -303,31 +303,6 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	pygame.display.flip()
 	nbPaire=0
 
-
-	
-pygame.init()
-pygame.display.set_caption('mahjong')
-fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
-fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
-fond.fill(BGCOLOR)#couleur du fond
-DISPLAYFONT = pygame.font.Font('freesansbold.ttf', 18)
-
-#Chargement des images
-tuile = chargement_images()
-(WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
-select_surface = pygame.image.load("pics/0.png").convert_alpha()
-
-#Boucle infinie
-startmenu = 0
-
-nbclick = 0
-nbPaire = 0
-
-menuRect = 0
-restartRect = 0
-
-start()
-
 def start(level = '0'):
 	commencer = 1
 	global startmenu
@@ -425,4 +400,29 @@ def start(level = '0'):
 					start(level)
 
 	print('EXIT')
+	
+pygame.init()
+pygame.display.set_caption('mahjong')
+fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
+fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
+fond.fill(BGCOLOR)#couleur du fond
+DISPLAYFONT = pygame.font.Font('freesansbold.ttf', 18)
+
+#Chargement des images
+tuile = chargement_images()
+(WIDTH, HEIGHT) = tuile[0].get_size()#setup des constantes de la largeur et hauteur des tuiles en fonction des images
+select_surface = pygame.image.load("pics/0.png").convert_alpha()
+
+#Boucle infinie
+startmenu = 0
+
+nbclick = 0
+nbPaire = 0
+
+menuRect = 0
+restartRect = 0
+
+start()
+
+
 	
