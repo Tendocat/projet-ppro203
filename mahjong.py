@@ -184,6 +184,7 @@ def egal(a, b):
 	return bool
 
 pygame.init()
+pygame.display.set_caption('mahjong')
 fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
 fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
 fond.fill((100,100,200))#couleur du fond
@@ -198,7 +199,7 @@ select_surface = pygame.image.load("pics/0.png").convert_alpha()
 continuer, commencer = 1, 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
-pygame.display.set_caption('mahjong')
+
 
 while continuer:
 	if commencer:
