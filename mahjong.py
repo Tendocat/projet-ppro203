@@ -275,8 +275,36 @@ def egal(a, b, tableau):
 			tableau[y2].remove(b)
 			nbPaire += 1
 	return bool
-
 	
+
+def gameOverScreen(tableau,debut, nbclick, nbPaire):
+	refresh(tableau)
+	fin = time.time() #Temps de fin de la partie
+	ttotal = fin-debut #Temps total de la partie en secondes
+	tsec = ttotal
+	tmin = 0 #Temps en minutes
+	while tsec>60:
+		tmin +=1
+		tsec -= 60
+		
+	timeSurf = DISPLAYFONT.render('Temps total : %d minutes et %d secondes.' % (tmin, tsec), True, WHITE)
+	timeRect = timeSurf.get_rect()
+	timeRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	fenetre.blit(timeSurf, timeRect)
+	ttSurf = DISPLAYFONT.render('Temps par tuiles : %d' % (tsec/34), True, WHITE)
+	ttRect = timeSurf.get_rect()
+	ttRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	fenetre.blit(ttSurf, ttRect)
+	nbcSurf = DISPLAYFONT.render('Nombre de clicks : %d' % (nbclick), True, WHITE)
+	nbcRect = nbcSurf.get_rect()
+	nbcRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	fenetre.blit(nbcSurf, nbcRect)
+	nbciSurf = DISPLAYFONT.render('Nombre de clicks inutiles : %d' % (nbclick-34), True, WHITE)
+	nbciRect = nbciSurf.get_rect()
+	nbciRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	fenetre.blit(nbciSurf, nbciRect)
+	pygame.display.flip()
+	nbPaire=0
 	
 pygame.init()
 pygame.display.set_caption('mahjong')
@@ -335,18 +363,23 @@ def start():
 							if tab:
 								over = 0
 						if over :
-							fin = time.time() #Temps de fin de la partie
-							ttotal = fin-debut #Temps total de la partie en secondes
-							tsec = ttotal
-							tmin = 0 #Temps en minutes
-							while tsec>60:
-								tmin +=1
-								tsec -= 60
-							print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
-							print('Temps par tuiles : ', tsec/34)
-							print('Nombre de clicks : ', nbclick)
-							print('Nombre de clicks inutiles : ', nbclick-34)
-							nbPaire=0
+							while True:
+								gameOverScreen(tableau, debut, nbclick, nbPaire)
+								for event in pygame.event.get():
+									if event.type == KEYDOWN:
+										if event.key == pygame.K_s:
+											start()
+										if event.key == pygame.K_m:
+											startmenu = 0
+											start()
+									if event.type == QUIT:
+										pygame.quit()
+										sys.exit()
+									if event.type == MOUSEBUTTONDOWN:
+										if event.button == 1:
+											print('s')
+											start()
+							
 						refresh(tableau)
 					else :
 						select = tuile_position(event.pos, tableau)
