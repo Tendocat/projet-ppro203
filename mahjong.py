@@ -3,13 +3,14 @@ from pygame.locals import *
 import time
 
 
-WHITE     = (255, 255, 255)
-BLACK     = (  0,   0,   0)
 
-WINDOWWIDTH = 630
+
+WINDOWWIDTH  = 630
 WINDOWHEIGHT = 480
-
-
+BGCOLOR      = (100,100,200)
+RED          = (255,   0,   0)
+WHITE        = (255, 255, 255)
+BLACK        = (  0,   0,   0)
 
 #load les images des tuiles
 def chargement_images():
@@ -172,7 +173,45 @@ def diplayScore(nb):
     scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
     scoreRect = scoreSurf.get_rect()
     scoreRect.topleft = (WINDOWWIDTH - 120, 10)
-    fenetre.blit(scoreSurf, scoreRect)	
+    fenetre.blit(scoreSurf, scoreRect)
+	
+	
+def displayStartmenu():
+	fenetre.fill(RED)
+	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
+	mahjongRect = mahjongSurf.get_rect()
+	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
+	fenetre.blit(mahjongSurf, mahjongRect)
+	pygame.display.flip()
+	time.sleep(2)
+	
+	
+"""	
+def showGameOverScreen():
+    gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
+    gameSurf = gameOverFont.render('Game', True, WHITE)
+    overSurf = gameOverFont.render('Over', True, WHITE)
+    gameRect = gameSurf.get_rect()
+    overRect = overSurf.get_rect()
+    gameRect.midtop = (WINDOWWIDTH / 2, 10)
+    overRect.midtop = (WINDOWWIDTH / 2, gameRect.height + 10 + 25)
+
+    DISPLAYSURF.blit(gameSurf, gameRect)
+    DISPLAYSURF.blit(overSurf, overRect)
+    drawPressKeyMsg()
+    pygame.display.update()
+    pygame.time.wait(500)
+    checkForKeyPress() # clear out any key presses in the event queue
+
+    while True:
+        if checkForKeyPress():
+            pygame.event.get() # clear event queue
+            return
+	
+"""	
+	
+	
+	
 	
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
@@ -198,11 +237,13 @@ def egal(a, b):
 			nbPaire += 1
 	return bool
 
+	
+	
 pygame.init()
 pygame.display.set_caption('mahjong')
 fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
 fond = pygame.Surface(fenetre.get_size()).convert()#creation du fond a la taille de la fenetre
-fond.fill((100,100,200))#couleur du fond
+fond.fill(BGCOLOR)#couleur du fond
 DISPLAYFONT = pygame.font.Font('freesansbold.ttf', 18)
 
 #Chargement des images
@@ -211,6 +252,7 @@ tuile = chargement_images()
 select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
+startmenu = 0
 commencer = 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
@@ -220,6 +262,9 @@ nbclick = 0
 nbPaire = 0
 
 while True:
+	if startmenu==0 :
+		displayStartmenu()
+		startmenu = 1
 	if commencer:
 		tableau = generation_tab_fichier(tuile)
 		refresh_initialiation(tableau)
