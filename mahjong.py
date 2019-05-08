@@ -277,31 +277,22 @@ def egal(a, b, tableau):
 	return bool
 	
 
-def gameOverScreen(tableau,debut, nbclick, nbPaire):
-	refresh(tableau)
-	fin = time.time() #Temps de fin de la partie
-	ttotal = fin-debut #Temps total de la partie en secondes
-	tsec = ttotal
-	tmin = 0 #Temps en minutes
-	while tsec>60:
-		tmin +=1
-		tsec -= 60
-		
+def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	timeSurf = DISPLAYFONT.render('Temps total : %d minutes et %d secondes.' % (tmin, tsec), True, WHITE)
 	timeRect = timeSurf.get_rect()
 	timeRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
 	fenetre.blit(timeSurf, timeRect)
 	ttSurf = DISPLAYFONT.render('Temps par tuiles : %d' % (tsec/34), True, WHITE)
 	ttRect = timeSurf.get_rect()
-	ttRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	ttRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+25)
 	fenetre.blit(ttSurf, ttRect)
 	nbcSurf = DISPLAYFONT.render('Nombre de clicks : %d' % (nbclick), True, WHITE)
 	nbcRect = nbcSurf.get_rect()
-	nbcRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	nbcRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+50)
 	fenetre.blit(nbcSurf, nbcRect)
 	nbciSurf = DISPLAYFONT.render('Nombre de clicks inutiles : %d' % (nbclick-34), True, WHITE)
 	nbciRect = nbciSurf.get_rect()
-	nbciRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
+	nbciRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+75)
 	fenetre.blit(nbciSurf, nbciRect)
 	pygame.display.flip()
 	nbPaire=0
@@ -363,8 +354,16 @@ def start():
 							if tab:
 								over = 0
 						if over :
+							refresh(tableau)
+							fin = time.time() #Temps de fin de la partie
+							ttotal = fin-debut #Temps total de la partie en secondes
+							tsec = ttotal
+							tmin = 0 #Temps en minutes
+							while tsec>60:
+								tmin +=1
+								tsec -= 60
 							while True:
-								gameOverScreen(tableau, debut, nbclick, nbPaire)
+								gameOverScreen(tmin, tsec, nbclick, nbPaire)
 								for event in pygame.event.get():
 									if event.type == KEYDOWN:
 										if event.key == pygame.K_s:
