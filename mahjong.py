@@ -323,11 +323,10 @@ startmenu = 0
 nbclick = 0
 nbPaire = 0
 
-firsttime=1
-
-
 menuRect = 0
 restartRect = 0
+
+start()
 
 def start(level = '0'):
 	commencer = 1
@@ -426,7 +425,4 @@ def start(level = '0'):
 					start(level)
 
 	print('EXIT')
-if firsttime:
-	firsttime = 0
-	start()
 	
