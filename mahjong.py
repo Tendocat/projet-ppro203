@@ -130,7 +130,7 @@ def refresh_initialiation(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire)
-	diplayMenuButton()
+	displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			for n in range (5):
@@ -147,7 +147,7 @@ def refresh(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire)
-	diplayMenuButton()
+	displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
@@ -177,7 +177,7 @@ def displayScore(nb):
     scoreRect.topleft = (WINDOWWIDTH - 120, 10)
     fenetre.blit(scoreSurf, scoreRect)
 	
-def diplayMenuButton():
+def displayMenuButton():
 	menuSurf = DISPLAYFONT.render('Menu', True, WHITE)
 	menuRect = menuSurf.get_rect()
 	menuRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
