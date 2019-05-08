@@ -296,7 +296,7 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	nbcRect = nbcSurf.get_rect()
 	nbcRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+50)
 	fenetre.blit(nbcSurf, nbcRect)
-	nbciSurf = DISPLAYFONT.render('Nombre de clicks inutiles : %d' % (nbclick-34), True, WHITE)
+	nbciSurf = DISPLAYFONT.render('Nombre de clicks inutiles : %d' % (nbclick-nbPaire*2), True, WHITE)
 	nbciRect = nbciSurf.get_rect()
 	nbciRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+75)
 	fenetre.blit(nbciSurf, nbciRect)
@@ -356,6 +356,7 @@ def start(level = '0'):
 				sys.exit()	#On arrête la boucle
 			if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 				if event.button == 1:
+					nbclick += 1
 					if (menuRect.collidepoint(event.pos)):
 						startmenu = 0
 						time.sleep(0.2)
@@ -365,7 +366,6 @@ def start(level = '0'):
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						refresh(tableau)
 						select = (-1, -1)
-						nbclick += 1
 					elif(select == (-1, -1)):
 						select = tuile_position(event.pos, tableau)
 						fenetre.blit(select_surface, select)
