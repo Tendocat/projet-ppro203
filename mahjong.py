@@ -268,21 +268,22 @@ def displayStartmenu():
 def levelEditor():
 	fenetre.fill(BLACK)
 	pygame.display.flip()
-	textSurf = pygame.font.Font('freesansbold.ttf', 600).render('#', True, WHITE)
+	
+	textSurf = pygame.font.Font('freesansbold.ttf', 500).render('::', True, WHITE)
 	textSurf.fill(WHITE)
 	textRect = textSurf.get_rect()
-	textRect.midtop = (WINDOWWIDTH/5 , WINDOWHEIGHT/5)
+	textRect.topleft = (5*WINDOWWIDTH/20 , WINDOWHEIGHT/7)
 	fenetre.blit(textSurf, textRect)
 	pygame.display.update(textRect)
 	
 	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
 	cancelRect = cancelSurf.get_rect()
-	cancelRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	cancelRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
 	fenetre.blit(cancelSurf, cancelRect)
 	
-	savSurf = DISPLAYFONT.render('+', True, WHITE)
+	savSurf = DISPLAYFONT.render('Save', True, WHITE)
 	savRect = savSurf.get_rect()
-	savRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	savRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
 	fenetre.blit(savSurf, savRect)
 	pygame.display.flip()
 	#fenetre.blit(mahjongSurf, mahjongRect)
@@ -295,11 +296,11 @@ def levelEditor():
 				if event.button == 1:
 					if (cancelRect.collidepoint(event.pos)):
 						displayStartmenu()
-					if (saveRect.collidepoint(event.pos)):
+					if (savRect.collidepoint(event.pos)):
 						pass
 			if event.type == QUIT:
-				pygame.exit()
-				system.close()
+				pygame.quit()
+				system.exit()
 
 
 
