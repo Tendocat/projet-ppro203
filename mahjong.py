@@ -2,6 +2,10 @@ import pygame, sys
 from pygame.locals import *
 import time
 
+
+WHITE     = (255, 255, 255)
+BLACK     = (  0,   0,   0)
+
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
@@ -189,6 +193,8 @@ select_surface = pygame.image.load("pics/0.png").convert_alpha()
 continuer, commencer = 1, 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
+pygame.display.set_caption('mahjong')
+
 while continuer:
 	if commencer:
 		tableau = generation_tab_fichier(tuile)
