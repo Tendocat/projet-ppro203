@@ -314,13 +314,6 @@ def start():
 			commencer = 0
 		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
 			if event.type == QUIT:	#Si un de ces événements est de type QUIT
-				fin = time.time() #Temps de fin de la partie
-				ttotal = fin-debut #Temps total de la partie en secondes
-				tsec = ttotal
-				tmin = 0 #Temps en minutes
-				while tsec>60:
-					tmin +=1
-					tsec -= 60
 				print('EXIT')
 				pygame.quit()
 				sys.exit()	#On arrête la boucle
@@ -338,11 +331,20 @@ def start():
 						#test si chaque ligne est vide
 						for tab in tableau:
 							if tab:
-								print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
-								print('Temps par tuiles : ', tsec/34)
-								print('Nombre de clicks : ', nbclick)
-								print('Nombre de clicks inutiles : ', nbclick-34)
-								nbPaire=0
+								pass
+						else :
+							fin = time.time() #Temps de fin de la partie
+							ttotal = fin-debut #Temps total de la partie en secondes
+							tsec = ttotal
+							tmin = 0 #Temps en minutes
+							while tsec>60:
+								tmin +=1
+								tsec -= 60
+							print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
+							print('Temps par tuiles : ', tsec/34)
+							print('Nombre de clicks : ', nbclick)
+							print('Nombre de clicks inutiles : ', nbclick-34)
+							nbPaire=0
 						refresh(tableau)
 					else :
 						select = tuile_position(event.pos, tableau)
