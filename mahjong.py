@@ -282,7 +282,7 @@ select_surface = pygame.image.load("pics/0.png").convert_alpha()
 
 #Boucle infinie
 startmenu = 0
-debut = time.time() #Temps de début de la partie
+
 nbclick = 0
 nbPaire = 0
 
@@ -300,6 +300,8 @@ def start():
 	global menuRect
 	global restartRect
 	nbPaire = 0
+	nbclick = 0
+	debut = time.time() #Temps de début de la partie
 	while True:
 		if startmenu==0 :
 			startmenu = 1
@@ -346,6 +348,11 @@ def start():
 								tmin +=1
 								tsec -= 60
 							gameOverScreen(tmin, tsec, nbclick, nbPaire)
+							nextlvlSurf = DISPLAYFONT.render('Next Level', True, WHITE)
+							nextlvlRect = nextlvlSurf.get_rect()
+							nextlvlRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+44)
+							fenetre.blit(nextlvlSurf, nextlvlRect)
+							pygame.display.flip()
 							while True:
 								for event in pygame.event.get():
 									if event.type == KEYDOWN:
@@ -358,8 +365,16 @@ def start():
 										pygame.quit()
 										sys.exit()
 									if event.type == MOUSEBUTTONDOWN:
-										if event.button == 1:
+										if (menuRect.collidepoint(event.pos)):
+											startmenu = 0
+											time.sleep(0.2)
 											start()
+										elif (restartRect.collidepoint(event.pos)):
+											start()
+										elif (nextlvlRect.collidepoint(event.pos)):
+											print('dfg')
+											start()
+											
 							
 						refresh(tableau)
 					else :
