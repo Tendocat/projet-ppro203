@@ -129,7 +129,7 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 def refresh_initialiation(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
-	diplayScore(nbPaire)
+	displayScore(nbPaire)
 	diplayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
@@ -146,7 +146,7 @@ def refresh_initialiation(tableau):
 def refresh(tableau):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
-	diplayScore(nbPaire)
+	displayScore(nbPaire)
 	diplayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
@@ -171,7 +171,7 @@ def tuile_position(p, tableau):
 	return selection
 
 	
-def diplayScore(nb):
+def displayScore(nb):
     scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
     scoreRect = scoreSurf.get_rect()
     scoreRect.topleft = (WINDOWWIDTH - 120, 10)
