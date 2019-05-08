@@ -35,8 +35,9 @@ def chargement_images():
 #return génère un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
-def generation_tab_fichier(tuile, nom_fichier = 'levels/tableau'):
+def generation_tab_fichier(tuile, nom_fichier = 'levels/0'):
 	tableau = []
+	nom_fichier = 'levels/' + (str)(nom_fichier) + '.txt'
 	with open(nom_fichier, 'r') as fichier:
 		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
 			ligne = fichier.readline()
@@ -194,7 +195,7 @@ def displayMenuButton():
 def displayStartmenu():
 	global startmenu
 	menu = 1
-	diff = 1
+	diff = 0
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
 	fenetre.fill(RED)
@@ -214,7 +215,7 @@ def displayStartmenu():
 	cdminusRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cdminusSurf, cdminusRect)
 	
-	cddisSurf = DISPLAYFONT.render('1', True, WHITE)
+	cddisSurf = DISPLAYFONT.render('0', True, WHITE)
 	cddisRect = cddisSurf.get_rect()
 	cddisRect.topleft = (WINDOWWIDTH - 155+65, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cddisSurf, cddisRect)
@@ -229,38 +230,33 @@ def displayStartmenu():
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
-					start()
+					start(diff)
 				if event.key == pygame.K_m:
 					startmenu = 0
-					start()
+					start(diff)
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					if (startRect.collidepoint(event.pos)):
-						start()
+						start(diff)
 					elif (cdRect.collidepoint(event.pos)):
 						start(diff)
-					elif ((cdminusRect.collidepoint(event.pos)) and (diff>1)):
+					elif ((cdminusRect.collidepoint(event.pos)) and (diff>0)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
-						pygame.display.update(cddisRect)
 						diff-=1
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
-						
-						print(44)
-					elif ((cdplusRect.collidepoint(event.pos)) and (diff<10)):
+					elif ((cdplusRect.collidepoint(event.pos)) and (diff<9)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
-						pygame.display.update(cddisRect)
 						diff+=1
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
-						print(44)
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
@@ -333,7 +329,8 @@ firsttime=1
 menuRect = 0
 restartRect = 0
 
-def start(nomfichier = 'levels/tableau'):
+def start(level = '0'):
+	print(level)
 	commencer = 1
 	global startmenu
 	global nbclick
@@ -348,7 +345,7 @@ def start(nomfichier = 'levels/tableau'):
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			tableau = generation_tab_fichier(tuile, nomfichier)
+			tableau = generation_tab_fichier(tuile, level)
 			refresh_initialiation(tableau)
 			select = (-1, -1)
 			commencer = 0
@@ -362,9 +359,9 @@ def start(nomfichier = 'levels/tableau'):
 					if (menuRect.collidepoint(event.pos)):
 						startmenu = 0
 						time.sleep(0.2)
-						start()
+						start(level)
 					elif (restartRect.collidepoint(event.pos)):
-						start()
+						start(level)
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						refresh(tableau)
 						select = (-1, -1)
@@ -398,10 +395,10 @@ def start(nomfichier = 'levels/tableau'):
 								for event in pygame.event.get():
 									if event.type == KEYDOWN:
 										if event.key == pygame.K_s:
-											start()
+											start(level)
 										if event.key == pygame.K_m:
 											startmenu = 0
-											start()
+											start(level)
 									if event.type == QUIT:
 										pygame.quit()
 										sys.exit()
@@ -409,12 +406,12 @@ def start(nomfichier = 'levels/tableau'):
 										if (menuRect.collidepoint(event.pos)):
 											startmenu = 0
 											time.sleep(0.2)
-											start()
+											start(level)
 										elif (restartRect.collidepoint(event.pos)):
-											start()
+											start(level)
 										elif (nextlvlRect.collidepoint(event.pos)):
 											print('dfg')
-											start()
+											start(level)
 											
 							
 						refresh(tableau)
@@ -425,10 +422,10 @@ def start(nomfichier = 'levels/tableau'):
 						pygame.display.flip()
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
-					start()
+					start(level)
 				if event.key == pygame.K_m:
 					startmenu = 0
-					start()
+					start(level)
 
 	print('EXIT')
 if firsttime:
