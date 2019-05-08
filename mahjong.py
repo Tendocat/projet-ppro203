@@ -196,15 +196,15 @@ def displayStartmenu():
 	menu = 1
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
+	fenetre.fill(RED)
+	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
+	fenetre.blit(mahjongSurf, mahjongRect)
+	startSurf = DISPLAYFONT.render('Start', True, WHITE)
+	startRect = startSurf.get_rect()
+	startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
+	fenetre.blit(startSurf, startRect)
+	pygame.display.flip()
 	while menu :
-		fenetre.fill(RED)
-		mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
-		fenetre.blit(mahjongSurf, mahjongRect)
-		startSurf = DISPLAYFONT.render('Start', True, WHITE)
-		startRect = startSurf.get_rect()
-		startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
-		fenetre.blit(startSurf, startRect)
-		pygame.display.flip()
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
@@ -345,8 +345,8 @@ def start():
 							while tsec>60:
 								tmin +=1
 								tsec -= 60
+							gameOverScreen(tmin, tsec, nbclick, nbPaire)
 							while True:
-								gameOverScreen(tmin, tsec, nbclick, nbPaire)
 								for event in pygame.event.get():
 									if event.type == KEYDOWN:
 										if event.key == pygame.K_s:
@@ -359,7 +359,6 @@ def start():
 										sys.exit()
 									if event.type == MOUSEBUTTONDOWN:
 										if event.button == 1:
-											print('s')
 											start()
 							
 						refresh(tableau)
