@@ -210,7 +210,7 @@ while continuer:
 			while tsec>60:
 				tmin +=1
 				tsec -= 60
-			print('Temps total : ', tmin, 'minutes et ', tsec, 'secondes.')
+			print('Temps total : %d minutes et %d secondes.' % (tmin, tsec))
 			print('Temps par tuiles : ', tsec/34)
 			print('Nombre de clicks : ', nbclick)
 			print('Nombre de clicks inutiles : ', nbclick-34)
