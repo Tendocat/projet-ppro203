@@ -194,6 +194,7 @@ def displayMenuButton():
 def displayStartmenu():
 	global startmenu
 	menu = 1
+	diff = 1
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
 	fenetre.fill(RED)
@@ -201,12 +202,28 @@ def displayStartmenu():
 	fenetre.blit(mahjongSurf, mahjongRect)
 	startSurf = DISPLAYFONT.render('Start', True, WHITE)
 	startRect = startSurf.get_rect()
-	startRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8)
+	startRect.topleft = (WINDOWWIDTH - 100, 7*WINDOWHEIGHT/8-44)
 	fenetre.blit(startSurf, startRect)
 	cdSurf = DISPLAYFONT.render('Choose Difficulty', True, WHITE)
 	cdRect = cdSurf.get_rect()
-	cdRect.topleft = (WINDOWWIDTH - 120, 7*WINDOWHEIGHT/8+22)
+	cdRect.topleft = (WINDOWWIDTH - 155, 7*WINDOWHEIGHT/8-22)
 	fenetre.blit(cdSurf, cdRect)
+	
+	cdminusSurf = DISPLAYFONT.render('-', True, WHITE)
+	cdminusRect = cdminusSurf.get_rect()
+	cdminusRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8)
+	fenetre.blit(cdminusSurf, cdminusRect)
+	
+	cddisSurf = DISPLAYFONT.render('1', True, WHITE)
+	cddisRect = cddisSurf.get_rect()
+	cddisRect.topleft = (WINDOWWIDTH - 155+65, 7*WINDOWHEIGHT/8)
+	fenetre.blit(cddisSurf, cddisRect)
+	
+	cdplusSurf = DISPLAYFONT.render('+', True, WHITE)
+	cdplusRect = cdplusSurf.get_rect()
+	cdplusRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	fenetre.blit(cdplusSurf, cdplusRect)
+	
 	pygame.display.flip()
 	while menu :
 		for event in pygame.event.get():
@@ -223,9 +240,22 @@ def displayStartmenu():
 				if event.button == 1:
 					if (startRect.collidepoint(event.pos)):
 						start()
-					if (cdRect.collidepoint(event.pos)):
-						start()
-					
+					elif (cdRect.collidepoint(event.pos)):
+						start(diff)
+					elif ((cdminusRect.collidepoint(event.pos)) and (diff>1)):
+						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, BGCOLOR)
+						pygame.display.update(cddisRect)
+						diff-=1
+						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						pygame.display.update(cddisRect)
+						print(44)
+					elif ((cdplusRect.collidepoint(event.pos)) and (diff<10)):
+						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, BGCOLOR)
+						pygame.display.update(cddisRect)
+						diff+=1
+						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						pygame.display.update(cddisRect)
+						print(44)
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
@@ -298,7 +328,7 @@ firsttime=1
 menuRect = 0
 restartRect = 0
 
-def start():
+def start(nomfichier = 'levels/tableau'):
 	commencer = 1
 	global startmenu
 	global nbclick
@@ -313,7 +343,7 @@ def start():
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			tableau = generation_tab_fichier(tuile)
+			tableau = generation_tab_fichier(tuile, nomfichier)
 			refresh_initialiation(tableau)
 			select = (-1, -1)
 			commencer = 0
