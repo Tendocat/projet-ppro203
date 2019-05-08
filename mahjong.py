@@ -35,7 +35,7 @@ def chargement_images():
 #return génère un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
-def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
+def generation_tab_fichier(tuile, nom_fichier = 'levels/tableau'):
 	tableau = []
 	with open(nom_fichier, 'r') as fichier:
 		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
