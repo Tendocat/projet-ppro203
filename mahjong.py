@@ -156,7 +156,7 @@ def refresh(tableau):
 
 #test si la position est sur une tuile
 #return la position (x, y) de la tuile selectionnée
-def tuile_position(p):
+def tuile_position(p, tableau):
 	(x, y) = p
 	selection = 0
 	for bout in tableau:
@@ -255,7 +255,7 @@ def showGameOverScreen():
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
 #return true si tuiles égales/ on peut ajouter les familles ici
-def egal(a, b):
+def egal(a, b, tableau):
 	bool = 0
 	global nbPaire
 	if a == b:
@@ -301,11 +301,13 @@ firsttime=1
 def start():
 	commencer = 1
 	global startmenu
+	global nbclick
 	while True:
 		if startmenu==0 :
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
+			print('com')
 			tableau = generation_tab_fichier(tuile)
 			refresh_initialiation(tableau)
 			select = (-1, -1)
@@ -328,15 +330,15 @@ def start():
 				sys.exit()	#On arrête la boucle
 			if event.type == MOUSEBUTTONDOWN:	#Si un est de type click de souris
 				if event.button == 1:
-					if tuile_position(event.pos) == 0 or select == tuile_position(event.pos):
+					if tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						refresh(tableau)
 						select = (-1, -1)
 						nbclick += 1
 					elif(select == (-1, -1)):
-						select = tuile_position(event.pos)
+						select = tuile_position(event.pos, tableau)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
-					elif egal(select, tuile_position(event.pos)): #remove tuile et score up
+					elif egal(select, tuile_position(event.pos, tableau), tableau): #remove tuile et score up
 						#test si chaque ligne est vide
 						commencer = 1
 						for tab in tableau:
@@ -344,7 +346,7 @@ def start():
 								commencer = 0
 						refresh(tableau)
 					else :
-						select = tuile_position(event.pos)
+						select = tuile_position(event.pos, tableau)
 						refresh(tableau)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
