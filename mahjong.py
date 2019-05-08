@@ -220,39 +220,7 @@ def displayStartmenu():
 					if (startRect.collidepoint(event.pos)):
 						start()
 					
-"""	
-def drawPressKeyMsg():
-    pressKeySurf = BASICFONT.render('Press a key to play.', True, DARKGRAY)
-    pressKeyRect = pressKeySurf.get_rect()
-    pressKeyRect.topleft = (WINDOWWIDTH - 200, WINDOWHEIGHT - 30)
-    DISPLAYSURF.blit(pressKeySurf, pressKeyRect)
 
-def showGameOverScreen():
-    gameOverFont = pygame.font.Font('freesansbold.ttf', 150)
-    gameSurf = gameOverFont.render('Game', True, WHITE)
-    overSurf = gameOverFont.render('Over', True, WHITE)
-    gameRect = gameSurf.get_rect()
-    overRect = overSurf.get_rect()
-    gameRect.midtop = (WINDOWWIDTH / 2, 10)
-    overRect.midtop = (WINDOWWIDTH / 2, gameRect.height + 10 + 25)
-
-    DISPLAYSURF.blit(gameSurf, gameRect)
-    DISPLAYSURF.blit(overSurf, overRect)
-    drawPressKeyMsg()
-    pygame.display.update()
-    pygame.time.wait(500)
-    checkForKeyPress() # clear out any key presses in the event queue
-
-    while True:
-        if checkForKeyPress():
-            pygame.event.get() # clear event queue
-            return
-	
-"""	
-	
-	
-	
-	
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
 #return true si tuiles égales/ on peut ajouter les familles ici
