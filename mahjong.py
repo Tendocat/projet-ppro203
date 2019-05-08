@@ -10,6 +10,7 @@ WINDOWWIDTH = 630
 WINDOWHEIGHT = 480
 
 
+
 #load les images des tuiles
 def chargement_images():
 	tuiles = []
@@ -125,7 +126,9 @@ def generation_tab_fichier(tuile, nom_fichier = 'tableau'):
 	
 #refresh initialiation affichage tuiles differe	
 def refresh_initialiation(tableau):
+	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
+	diplayScore(nbPaire)
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			for n in range (5):
@@ -135,15 +138,18 @@ def refresh_initialiation(tableau):
 						pygame.quit()
 						sys.exit()
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
-			pygame.display.flip() #Rafraichissement	
+			pygame.display.flip() #Rafraichissement
 	
 #affiche le tableau du mahjong
 def refresh(tableau):
+	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
+	diplayScore(nbPaire)
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 	pygame.display.flip() #Rafraichissement
+	
 
 #test si la position est sur une tuile
 #return la position (x, y) de la tuile selectionnée
@@ -161,11 +167,19 @@ def tuile_position(p):
 					selection = bout[len(bout)-1][1]
 	return selection
 
+	
+def diplayScore(nb):
+    scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
+    scoreRect = scoreSurf.get_rect()
+    scoreRect.topleft = (WINDOWWIDTH - 120, 10)
+    fenetre.blit(scoreSurf, scoreRect)	
+	
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
 #return true si tuiles égales/ on peut ajouter les familles ici
 def egal(a, b):
 	bool = 0
+	global nbPaire
 	if a == b:
 		bool = 0
 	else:
@@ -181,6 +195,7 @@ def egal(a, b):
 			bool = 1
 			tableau[y1].remove(a)
 			tableau[y2].remove(b)
+			nbPaire += 1
 	return bool
 
 pygame.init()
@@ -200,6 +215,9 @@ continuer, commencer = 1, 1
 debut = time.time() #Temps de début de la partie
 nbclick = 0
 
+
+
+nbPaire = 0
 
 while continuer:
 	if commencer:
