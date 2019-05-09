@@ -337,9 +337,6 @@ def displayStartmenu():
 			if event.type == KEYDOWN:
 				if event.key == pygame.K_s:
 					start(diff)
-				if event.key == pygame.K_m:
-					startmenu = 0
-					start(diff)
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
@@ -373,7 +370,8 @@ def displayStartmenu():
 						levelEditor()
 					
 					
-					
+					elif (starteditRect.collidepoint(event.pos)):
+						start(diffedit, True)
 					elif (cdminuseditRect.collidepoint(event.pos)):
 						cddiseditSurf.fill(RED)
 						fenetre.blit(cddiseditSurf, cddiseditRect)
