@@ -101,9 +101,12 @@ def creer_level(level = 0):
 #return génère un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
-def generation_tab_fichier(tuile, nom_fichier = 'levels/0'):
+def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 	tableau = []
-	nom_fichier = 'levels/' + (str)(nom_fichier) + '.txt'
+	if not edit:
+		nom_fichier = 'levels/' + (str)(nom_fichier) + '.txt'
+	else :
+		nom_fichier = 'levels/edit' + (str)(nom_fichier) + '.txt'
 	with open(nom_fichier, 'r') as fichier:
 		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
 			ligne = fichier.readline()
@@ -344,7 +347,7 @@ def displayStartmenu():
 def levelEditor():
 	level     = 0
 	maxlvl    = 100
-	line      = 10
+	line      = 8
 	f         = 0
 	cinactive = pygame.Color('lemonchiffon')
 	cactive   = pygame.Color('firebrick')
@@ -404,7 +407,6 @@ def levelEditor():
 	pygame.display.flip()
 	#fenetre.blit(mahjongSurf, mahjongRect)
 	while True :
-		fenetre.blit(textSurf, textRect)
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
 				for k in range (line):
@@ -443,14 +445,14 @@ def levelEditor():
 							f.close()
 						try:
 							g=''
-							f = open("levels/%d.txt" %(level),"r")
+							f = open("levels/edit%d.txt" %(level),"r")
 							for i in range (line):
 								text[i] = f.readline()
 								g+=text[i]
 							f.close()
 						except FileNotFoundError:
 							pass
-						f = open("levels/%d.txt" %(level),"w+")
+						f = open("levels/edit%d.txt" %(level),"w+")
 					elif (nmmRect.collidepoint(event.pos)):
 						nmSurf.fill(BLACK)
 						fenetre.blit(nmSurf, nmRect)
@@ -474,6 +476,7 @@ def levelEditor():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
+		fenetre.blit(textSurf, textRect)
 		pygame.display.update(textRect)
 		for k in range (line):
 			txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
@@ -481,7 +484,7 @@ def levelEditor():
 			inputbox[k].w = width
 			fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
 			pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
-		pygame.display.flip()
+			pygame.display.update(inputbox[k])
 
 
 
@@ -536,7 +539,7 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 
 	
 	
-def start(level = 0):
+def start(level = 0, edit = False):
 	creer_level(level)
 	commencer = 1
 	global startmenu
@@ -552,7 +555,7 @@ def start(level = 0):
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			tableau = generation_tab_fichier(tuile, level)
+			tableau = generation_tab_fichier(tuile, level, edit = False)
 			refresh_initialiation(tableau, level, nbPaire)
 			select = (-1, -1)
 			commencer = 0
