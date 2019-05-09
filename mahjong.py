@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import time
-import random
+from random import *
 
 
 
@@ -31,7 +31,73 @@ def chargement_images():
 		t = pygame.image.load("pics/v"+(str)(k)+".png").convert_alpha()
 		tuiles.append(t)
 	return tuiles
+
+def random_tableau_fichier(ligne = 8, colonne = 6, nom_fichier = 'levels/random.txt'):
+	f = open(nom_fichier,'w')
+	tableau = []
 	
+	for c in range(0,(int)(colonne)):
+		tableau.append([0]*ligne)
+		
+	
+	for c in range(0,(int)(colonne)):
+		for l in range(0,ligne):
+			if tableau[c][l] == 0:
+				type = randint(0,4)
+				if type == 0:
+					ajouter = (str)(randint(1,9))
+				elif type == 1:
+					ajouter = 'a' + (str)(randint(1,9))
+				elif type == 2:
+					ajouter = 'b' + (str)(randint(1,9))
+				elif type == 3:
+					ajouter = 'd' + (str)(randint(1,3))
+				elif type == 4:
+					ajouter = 'v' + (str)(randint(1,4))
+				tableau[c][l] = ajouter
+				
+				a = 0
+				while  a != 1:
+					cc = randint(0,colonne-1)
+					b = randint(0,1)
+					if b == 0:
+						ll = l
+					elif b == 1:
+						ll = colonne-l
+				
+					if tableau[cc][ll] == 0:
+						tableau[cc][ll] = ajouter
+						a = 1
+	
+	for c in range(0,(int)(colonne)):
+		for l in range(0,ligne):
+			f.write((str)(tableau[c][l]))
+		f.write('\n')
+		
+	f.close()
+
+def creer_level(level = 0):
+	if level == 0:
+		random_tableau_fichier(4,3,"levels/0.txt")
+	elif level == 1:
+		random_tableau_fichier(6,4,"levels/1.txt")
+	elif level == 2:
+		random_tableau_fichier(10,4,"levels/2.txt")
+	elif level == 3:
+		random_tableau_fichier(6,5,"levels/3.txt")
+	elif level == 4:
+		random_tableau_fichier(10,5,"levels/4.txt")
+	elif level == 5:
+		random_tableau_fichier(6,6,"levels/5.txt")
+	elif level == 6:
+		random_tableau_fichier(10,6,"levels/6.txt")
+	elif level == 7:
+		random_tableau_fichier(6,7,"levels/7.txt")
+	elif level == 8:
+		random_tableau_fichier(10,7,"levels/8.txt")
+	elif level == 9:
+		random_tableau_fichier(10,8,"levels/9.txt")
+
 #return génère un tableau avec lignes = [[image0, (x, y)],...,[imageN, (xN, y)]] en lisant un fichier contenant les chiffres des images
 #param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
@@ -248,7 +314,7 @@ def displayStartmenu():
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					if (startRect.collidepoint(event.pos)):
-						start(random.randint(0, 9))
+						start(randint(0, 9))
 					elif (cdRect.collidepoint(event.pos)):
 						start(diff)
 					elif ((cdminusRect.collidepoint(event.pos)) and (diff>0)):
@@ -471,6 +537,7 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	
 	
 def start(level = 0):
+	creer_level(level)
 	commencer = 1
 	global startmenu
 	global nbclick
