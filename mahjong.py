@@ -127,10 +127,9 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0'):
 	return tableau
 	
 #refresh initialiation affichage tuiles differe	
-def refresh_initialiation(tableau):
-	global nbPaire
+def refresh_initialiation(tableau, level, nbPaire):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
-	displayScore(nbPaire)
+	displayScore(nbPaire, level)
 	displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
@@ -144,10 +143,10 @@ def refresh_initialiation(tableau):
 			pygame.display.flip() #Rafraichissement
 	
 #affiche le tableau du mahjong
-def refresh(tableau):
+def refresh(tableau, level):
 	global nbPaire
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
-	displayScore(nbPaire)
+	displayScore(nbPaire, level)
 	displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
@@ -172,11 +171,15 @@ def tuile_position(p, tableau):
 	return selection
 
 	
-def displayScore(nb):
-    scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
-    scoreRect = scoreSurf.get_rect()
-    scoreRect.topleft = (WINDOWWIDTH - 120, 10)
-    fenetre.blit(scoreSurf, scoreRect)
+def displayScore(nb, level):
+	scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
+	scoreRect = scoreSurf.get_rect()
+	scoreRect.topleft = (WINDOWWIDTH - 120, 35)
+	fenetre.blit(scoreSurf, scoreRect)
+	clvlSurf = DISPLAYFONT.render('Level %d' %(level), True, WHITE)
+	clvlRect = clvlSurf.get_rect()
+	clvlRect.topleft = (WINDOWWIDTH - 120, 10)
+	fenetre.blit(clvlSurf, clvlRect)
 	
 def displayMenuButton():
 	global menuRect
@@ -449,7 +452,7 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 
 	
 	
-def start(level = '0'):
+def start(level = 0):
 	commencer = 1
 	global startmenu
 	global nbclick
@@ -465,7 +468,7 @@ def start(level = '0'):
 			displayStartmenu()
 		if commencer:
 			tableau = generation_tab_fichier(tuile, level)
-			refresh_initialiation(tableau)
+			refresh_initialiation(tableau, level, nbPaire)
 			select = (-1, -1)
 			commencer = 0
 		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
@@ -483,7 +486,7 @@ def start(level = '0'):
 					elif (restartRect.collidepoint(event.pos)):
 						start(level)
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
-						refresh(tableau)
+						refresh(tableau, level)
 						select = (-1, -1)
 					elif(select == (-1, -1)):
 						select = tuile_position(event.pos, tableau)
@@ -496,7 +499,7 @@ def start(level = '0'):
 							if tab:
 								over = 0
 						if over :
-							refresh(tableau)
+							refresh(tableau, level)
 							fin = time.time() #Temps de fin de la partie
 							ttotal = fin-debut #Temps total de la partie en secondes
 							tsec = ttotal
@@ -529,13 +532,13 @@ def start(level = '0'):
 										elif (restartRect.collidepoint(event.pos)):
 											start(level)
 										elif (nextlvlRect.collidepoint(event.pos)):
-											start(level)
+											start(level+1)
 											
 							
-						refresh(tableau)
+						refresh(tableau, level)
 					else :
 						select = tuile_position(event.pos, tableau)
-						refresh(tableau)
+						refresh(tableau, level)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
 			if event.type == KEYDOWN:
