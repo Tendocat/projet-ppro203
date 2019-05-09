@@ -338,14 +338,12 @@ def levelEditor():
 	pygame.display.flip()
 	#fenetre.blit(mahjongSurf, mahjongRect)
 	while True :
+		fenetre.blit(textSurf, textRect)
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
 				for k in range (line):
 					if active[k]:
-						if event.key == pygame.K_RETURN:
-							print(text[k])
-							text[k] = ''
-						elif event.key == pygame.K_BACKSPACE:
+						if event.key == pygame.K_BACKSPACE:
 							text[k] = (text[k])[:-1]
 						else:
 							text[k] += event.unicode
@@ -360,6 +358,8 @@ def levelEditor():
 							active[k] = False
 						color[k] = cactive if active[k] else cinactive
 					if (cancelRect.collidepoint(event.pos)):
+						if (f!=0):
+							f.close()
 						displayStartmenu()
 					elif (savRect.collidepoint(event.pos)):
 						if f!=0:
@@ -369,9 +369,14 @@ def levelEditor():
 							f.close()
 							f=0
 					elif (edRect.collidepoint(event.pos)):
+						try:
+							f = open("levels/%d.txt" %(level),"r")
+							for i in range (line):
+								text[i] = f.readline()
+							f.close()
+						except FileNotFoundError:
+							pass
 						f = open("levels/%d.txt" %(level),"w+")
-						for i in range (line):
-							text[i] = 'file content'
 					elif (nmmRect.collidepoint(event.pos)):
 						nmSurf.fill(BLACK)
 						fenetre.blit(nmSurf, nmRect)
@@ -395,8 +400,6 @@ def levelEditor():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-		textSurf.fill(BLACK)
-		fenetre.blit(textSurf, textRect)
 		pygame.display.update(textRect)
 		for k in range (line):
 			txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
