@@ -269,6 +269,8 @@ def displayStartmenu():
 	menu = 1
 	diff = 0
 	maxilvl = 9
+	diffedit = 0
+	maxilvledit = 100
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
 	fenetre.fill(RED)
@@ -282,21 +284,48 @@ def displayStartmenu():
 	cdRect = cdSurf.get_rect()
 	cdRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-22)
 	fenetre.blit(cdSurf, cdRect)
-	
 	cdminusSurf = DISPLAYFONT.render('-', True, WHITE)
 	cdminusRect = cdminusSurf.get_rect()
 	cdminusRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cdminusSurf, cdminusRect)
-	
 	cddisSurf = DISPLAYFONT.render('0', True, WHITE)
 	cddisRect = cddisSurf.get_rect()
 	cddisRect.topleft = (WINDOWWIDTH - 155+65, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cddisSurf, cddisRect)
-	
 	cdplusSurf = DISPLAYFONT.render('+', True, WHITE)
 	cdplusRect = cdplusSurf.get_rect()
 	cdplusRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
 	fenetre.blit(cdplusSurf, cdplusRect)
+	
+	
+	
+	starteditSurf = DISPLAYFONT.render('Start edit level', True, WHITE)
+	starteditRect = starteditSurf.get_rect()
+	starteditRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-44-88)
+	fenetre.blit(starteditSurf, starteditRect)
+	cdeditSurf = DISPLAYFONT.render('Choose edit level', True, WHITE)
+	cdeditRect = cdeditSurf.get_rect()
+	cdeditRect.topleft = (WINDOWWIDTH - 155, 7*WINDOWHEIGHT/8-22 -88)
+	fenetre.blit(cdeditSurf, cdeditRect)
+	
+	cdminuseditSurf = DISPLAYFONT.render('-', True, WHITE)
+	cdminuseditRect = cdminuseditSurf.get_rect()
+	cdminuseditRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8 -88)
+	fenetre.blit(cdminuseditSurf, cdminuseditRect)
+	
+	cddiseditSurf = DISPLAYFONT.render('%d     '%(diffedit), True, WHITE)
+	cddiseditRect = cddiseditSurf.get_rect()
+	cddiseditRect.topleft = (WINDOWWIDTH - 155+55, 7*WINDOWHEIGHT/8-88)
+	fenetre.blit(cddiseditSurf, cddiseditRect)
+	
+	cdpluseditSurf = DISPLAYFONT.render('+', True, WHITE)
+	cdpluseditRect = cdpluseditSurf.get_rect()
+	cdpluseditRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8-88)
+	fenetre.blit(cdpluseditSurf, cdpluseditRect)
+	
+	
+	
+	
 	
 	editSurf = DISPLAYFONT.render('Level Editor', True, WHITE)
 	editRect = editSurf.get_rect()
@@ -320,7 +349,7 @@ def displayStartmenu():
 						start(randint(0, 9))
 					elif (cdRect.collidepoint(event.pos)):
 						start(diff)
-					elif ((cdminusRect.collidepoint(event.pos)) and (diff>0)):
+					elif (cdminusRect.collidepoint(event.pos)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
 						if (diff==0):
@@ -330,7 +359,7 @@ def displayStartmenu():
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
-					elif ((cdplusRect.collidepoint(event.pos)) and (diff<9)):
+					elif (cdplusRect.collidepoint(event.pos)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
 						if (diff<maxilvl):
@@ -342,6 +371,29 @@ def displayStartmenu():
 						pygame.display.update(cddisRect)
 					elif (editRect.collidepoint(event.pos)):
 						levelEditor()
+					
+					
+					
+					elif (cdminuseditRect.collidepoint(event.pos)):
+						cddiseditSurf.fill(RED)
+						fenetre.blit(cddiseditSurf, cddiseditRect)
+						if (diffedit==0):
+							diffedit = maxilvledit
+						else :
+							diffedit-=1
+						cddiseditSurf = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						fenetre.blit(cddiseditSurf, cddiseditRect)
+						pygame.display.update(cddiseditRect)
+					elif (cdpluseditRect.collidepoint(event.pos)):
+						cddiseditSurf.fill(RED)
+						fenetre.blit(cddiseditSurf, cddiseditRect)
+						if (diffedit<maxilvledit):
+							diffedit+=1
+						else:
+							diffedit = 0
+						cddiseditSurf = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						fenetre.blit(cddiseditSurf, cddiseditRect)
+						pygame.display.update(cddiseditRect)
 
 	
 def levelEditor():
