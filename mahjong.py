@@ -276,6 +276,7 @@ def levelEditor():
 	inputbox  = []
 	text      = []
 	active    = []
+	txt_surface =[]
 	fenetre.fill(BLACK)
 	pygame.display.flip()
 	
@@ -287,10 +288,11 @@ def levelEditor():
 	
 	
 	for k in range (line):
-		inputbox.append(pygame.Rect(100, 100+ k*22, 140, 22))
+		inputbox.append(pygame.Rect(100, 100+ k*24, 140, 22))
 		text.append('')
 		active.append(False)
 		color.append(cinactive)
+		txt_surface.append(k)
 		
 	pygame.display.update(textRect)
 	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
@@ -352,12 +354,14 @@ def levelEditor():
 					elif (savRect.collidepoint(event.pos)):
 						if f!=0:
 							for i in range (line):
-								f.write(text[k]+'\n')
-								text[k] = ''
+								f.write(text[i]+'\n')
+								text[i] = ''
 							f.close()
 							f=0
 					elif (edRect.collidepoint(event.pos)):
 						f = open("levels/%d.txt" %(level),"w+")
+						for i in range (line):
+							text[i] = 'file content'
 					elif (nmmRect.collidepoint(event.pos)):
 						nmSurf.fill(BLACK)
 						fenetre.blit(nmSurf, nmRect)
@@ -384,12 +388,12 @@ def levelEditor():
 
 		for k in range (line):
 			# Render the current text.
-			txt_surface = DISPLAYFONT.render(text[k], True, color[k])
+			txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
 			# Resize the box if the text is too long.
-			width = max(200, txt_surface.get_width()+10)
+			width = max(200, txt_surface[k].get_width()+10)
 			inputbox[k].w = width
 			# Blit the text.
-			fenetre.blit(txt_surface, (inputbox[k].x+5, inputbox[k].y+5))
+			fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
 			# Blit the input_box rect.
 			pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
 		pygame.display.flip()
