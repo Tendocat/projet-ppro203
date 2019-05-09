@@ -196,31 +196,28 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 	return tableau
 	
 #refresh initialiation affichage tuiles differe	
-def refresh_initialiation(tableau, level, nbPaire):
+def refresh_initialiation(tableau, level, nbPaire, startmenu):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire, level)
-	displayMenuButton()
+	b = displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			for n in range (4):
 				time.sleep(0.1)
-				for event in pygame.event.get():
-					if event.type == QUIT:
-						pygame.quit()
-						sys.exit()
+				eventInGame(startmenu, level, b[0], b[1])
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 			pygame.display.flip() #Rafraichissement
 	
 #affiche le tableau du mahjong
-def refresh(tableau, level):
-	global nbPaire
+def refresh(tableau, level, nbPaire):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire, level)
-	displayMenuButton()
+	b = displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 	pygame.display.flip() #Rafraichissement
+	return b
 	
 
 #test si la position est sur une tuile
@@ -261,8 +258,11 @@ def displayMenuButton():
 	restartRect = restartSurf.get_rect()
 	restartRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
 	fenetre.blit(restartSurf, restartRect)
+	buttonsGame[0]=menuRect
+	buttonsGame[1]=restartRect
+	return buttonsGame
 	
-	
+
 	
 def displayStartmenu():
 	global startmenu
@@ -466,15 +466,15 @@ def levelEditor():
 						else:
 							text[k] += event.unicode
 					
-			fenetre.blit(textSurf, textRect)
-			pygame.display.update(textRect)
-			for k in range (line):
-				txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
-				width = max(200, txt_surface[k].get_width()+10)
-				inputbox[k].w = width
-				fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
-				pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
-				pygame.display.update(inputbox[k])		
+				fenetre.blit(textSurf, textRect)
+				pygame.display.update(textRect)
+				for k in range (line):
+					txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
+					width = max(200, txt_surface[k].get_width()+10)
+					inputbox[k].w = width
+					fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
+					pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+					pygame.display.update(inputbox[k])		
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					for k in range (line):
@@ -606,7 +606,7 @@ def start(level = 0, edit = False):
 			displayStartmenu()
 		if commencer:
 			tableau = generation_tab_fichier(tuile, level, edit = False)
-			refresh_initialiation(tableau, level, nbPaire)
+			refresh_initialiation(tableau, level, nbPaire, startmenu)
 			select = (-1, -1)
 			commencer = 0
 		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
@@ -624,7 +624,7 @@ def start(level = 0, edit = False):
 					elif (restartRect.collidepoint(event.pos)):
 						start(level)
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
-						refresh(tableau, level)
+						b = refresh(tableau, level, nbPaire)
 						select = (-1, -1)
 					elif(select == (-1, -1)):
 						select = tuile_position(event.pos, tableau)
@@ -637,7 +637,7 @@ def start(level = 0, edit = False):
 							if tab:
 								over = 0
 						if over :
-							refresh(tableau, level)
+							b = refresh(tableau, level, nbPaire)
 							fin = time.time() #Temps de fin de la partie
 							ttotal = fin-debut #Temps total de la partie en secondes
 							tsec = ttotal
@@ -652,31 +652,12 @@ def start(level = 0, edit = False):
 							fenetre.blit(nextlvlSurf, nextlvlRect)
 							pygame.display.flip()
 							while True:
-								for event in pygame.event.get():
-									if event.type == KEYDOWN:
-										if event.key == pygame.K_s:
-											start(level)
-										if event.key == pygame.K_m:
-											startmenu = 0
-											start(level)
-									if event.type == QUIT:
-										pygame.quit()
-										sys.exit()
-									if event.type == MOUSEBUTTONDOWN:
-										if (menuRect.collidepoint(event.pos)):
-											startmenu = 0
-											time.sleep(0.2)
-											start(level)
-										elif (restartRect.collidepoint(event.pos)):
-											start(level)
-										elif (nextlvlRect.collidepoint(event.pos)):
-											start(level+1)
-											
+								eventInGame(startmenu, level, b[0] , b[1], nextlvlRect)
 							
-						refresh(tableau, level)
+						b = refresh(tableau, level, nbPaire)
 					else :
 						select = tuile_position(event.pos, tableau)
-						refresh(tableau, level)
+						b = refresh(tableau, level, nbPaire)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
 			if event.type == KEYDOWN:
@@ -688,6 +669,27 @@ def start(level = 0, edit = False):
 
 	print('EXIT')
 	
+def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
+	for event in pygame.event.get():
+		if event.type == KEYDOWN:
+			if event.key == pygame.K_s:
+				start(level)
+			if event.key == pygame.K_m:
+				startmenu = 0
+				start(level)
+		if event.type == QUIT:
+			pygame.quit()
+			sys.exit()
+		if event.type == MOUSEBUTTONDOWN:
+			if (menuRect.collidepoint(event.pos)):
+				displayStartmenu()
+			elif (restartRect.collidepoint(event.pos)):
+				start(level)
+			elif ((nextlvlRect.collidepoint(event.pos))and (nextlvlRect !=0)):
+				start(level+1)
+				
+
+
 pygame.init()
 pygame.display.set_caption('mahjong')
 fenetre = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))#Ouverture de la fenetre Pygame
@@ -704,6 +706,12 @@ startmenu = 0
 
 nbclick = 0
 nbPaire = 0
+
+buttonsGame = [0]*3
+
+
+
+
 
 menuRect = 0
 restartRect = 0
