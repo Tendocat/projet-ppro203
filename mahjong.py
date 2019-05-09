@@ -466,7 +466,15 @@ def levelEditor():
 						else:
 							text[k] += event.unicode
 					
-					
+			fenetre.blit(textSurf, textRect)
+			pygame.display.update(textRect)
+			for k in range (line):
+				txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
+				width = max(200, txt_surface[k].get_width()+10)
+				inputbox[k].w = width
+				fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
+				pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+				pygame.display.update(inputbox[k])		
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					for k in range (line):
@@ -526,15 +534,7 @@ def levelEditor():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-		fenetre.blit(textSurf, textRect)
-		pygame.display.update(textRect)
-		for k in range (line):
-			txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
-			width = max(200, txt_surface[k].get_width()+10)
-			inputbox[k].w = width
-			fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
-			pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
-			pygame.display.update(inputbox[k])
+		
 
 
 
