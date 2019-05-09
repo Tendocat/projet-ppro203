@@ -276,33 +276,39 @@ def levelEditor():
 	textRect = textSurf.get_rect()
 	textRect.topleft = (5*WINDOWWIDTH/20 -50 , WINDOWHEIGHT/7)
 	fenetre.blit(textSurf, textRect)
-	pygame.display.update(textRect)
 	
+	input_box0 = pg.Rect(100, 100, 140, 22 + 0*22)
+	input_box1 = pg.Rect(100, 100, 140, 22 + 1*22)
+	input_box2 = pg.Rect(100, 100, 140, 22 + 2*22)
+	input_box3 = pg.Rect(100, 100, 140, 22 + 3*22)
+	input_box4 = pg.Rect(100, 100, 140, 22 + 4*22)
+	input_box5 = pg.Rect(100, 100, 140, 22 + 5*22)
+	input_box6 = pg.Rect(100, 100, 140, 22 + 6*22)
+	input_box7 = pg.Rect(100, 100, 140, 22 + 7*22)
+	input_box8 = pg.Rect(100, 100, 140, 22 + 8*22)
+	input_box9 = pg.Rect(100, 100, 140, 22 + 9*22)
+	
+	pygame.display.update(textRect)
 	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
 	namRect = namSurf.get_rect()
 	namRect.topleft = (WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
 	fenetre.blit(namSurf, namRect)
-	
 	nmpSurf = DISPLAYFONT.render('+', True, WHITE)
 	nmpRect = nmpSurf.get_rect()
 	nmpRect.topleft = (WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
 	fenetre.blit(nmpSurf, nmpRect)
-	
 	nmSurf = DISPLAYFONT.render('%d     ' % (level), True, WHITE)
 	nmRect = nmSurf.get_rect()
 	nmRect.topleft = (WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
 	fenetre.blit(nmSurf, nmRect)
-	
 	nmmSurf = DISPLAYFONT.render('-', True, WHITE)
 	nmmRect = nmmSurf.get_rect()
 	nmmRect.topleft = (WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
 	fenetre.blit(nmmSurf, nmmRect)
-	
 	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
 	cancelRect = cancelSurf.get_rect()
 	cancelRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
 	fenetre.blit(cancelSurf, cancelRect)
-	
 	savSurf = DISPLAYFONT.render('Save', True, WHITE)
 	savRect = savSurf.get_rect()
 	savRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
@@ -518,8 +524,8 @@ nbPaire = 0
 
 menuRect = 0
 restartRect = 0
-
-start()
+if __name__ == '__main__':
+	start()
 
 
 	
