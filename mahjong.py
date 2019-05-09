@@ -281,10 +281,10 @@ def levelEditor():
 	pygame.display.flip()
 	
 	textSurf = pygame.font.Font('freesansbold.ttf', 500).render('::', True, WHITE)
-	textSurf.fill(WHITE)
+	textSurf.fill(BLACK)
 	textRect = textSurf.get_rect()
-	textRect.topleft = (5*WINDOWWIDTH/20 -50 , WINDOWHEIGHT/7)
-	#fenetre.blit(textSurf, textRect)
+	textRect.topleft = (4*WINDOWWIDTH/20 -50 , WINDOWHEIGHT/7)
+	fenetre.blit(textSurf, textRect)
 	
 	
 	for k in range (line):
@@ -385,16 +385,14 @@ def levelEditor():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-
+		textSurf.fill(BLACK)
+		fenetre.blit(textSurf, textRect)
+		pygame.display.update(textRect)
 		for k in range (line):
-			# Render the current text.
 			txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
-			# Resize the box if the text is too long.
 			width = max(200, txt_surface[k].get_width()+10)
 			inputbox[k].w = width
-			# Blit the text.
 			fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
-			# Blit the input_box rect.
 			pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
 		pygame.display.flip()
 
