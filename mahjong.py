@@ -199,6 +199,7 @@ def displayStartmenu():
 	global startmenu
 	menu = 1
 	diff = 0
+	maxilvl = 9
 	mahjongSurf = pygame.font.Font('freesansbold.ttf', 100).render('MAHJONG', True, BGCOLOR)
 	mahjongRect = mahjongSurf.get_rect()
 	fenetre.fill(RED)
@@ -253,14 +254,20 @@ def displayStartmenu():
 					elif ((cdminusRect.collidepoint(event.pos)) and (diff>0)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
-						diff-=1
+						if (diff==0):
+							diff = maxilvl
+						else :
+							diff-=1
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
 					elif ((cdplusRect.collidepoint(event.pos)) and (diff<9)):
 						cddisSurf.fill(RED)
 						fenetre.blit(cddisSurf, cddisRect)
-						diff+=1
+						if (diff<maxilvl):
+							diff+=1
+						else:
+							diff = 0
 						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
 						fenetre.blit(cddisSurf, cddisRect)
 						pygame.display.update(cddisRect)
