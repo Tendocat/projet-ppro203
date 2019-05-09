@@ -269,6 +269,7 @@ def levelEditor():
 	level     = 0
 	maxlvl    = 100
 	line      = 10
+	f         = 0
 	cinactive = pygame.Color('lemonchiffon')
 	cactive   = pygame.Color('firebrick')
 	color     = []
@@ -349,9 +350,14 @@ def levelEditor():
 					if (cancelRect.collidepoint(event.pos)):
 						displayStartmenu()
 					elif (savRect.collidepoint(event.pos)):
-						pass
+						if f!=0:
+							for i in range (line):
+								f.write(text[k]+'\n')
+								text[k] = ''
+							f.close()
+							f=0
 					elif (edRect.collidepoint(event.pos)):
-						pass
+						f = open("levels/%d.txt" %(level),"w+")
 					elif (nmmRect.collidepoint(event.pos)):
 						nmSurf.fill(BLACK)
 						fenetre.blit(nmSurf, nmRect)
