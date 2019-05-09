@@ -266,8 +266,15 @@ def displayStartmenu():
 
 	
 def levelEditor():
-	level = 0
-	maxlvl = 100
+	level     = 0
+	maxlvl    = 100
+	line      = 10
+	cinactive = pygame.Color('lemonchiffon')
+	cactive   = pygame.Color('firebrick')
+	color     = []
+	inputbox  = []
+	text      = []
+	active    = []
 	fenetre.fill(BLACK)
 	pygame.display.flip()
 	
@@ -275,19 +282,15 @@ def levelEditor():
 	textSurf.fill(WHITE)
 	textRect = textSurf.get_rect()
 	textRect.topleft = (5*WINDOWWIDTH/20 -50 , WINDOWHEIGHT/7)
-	fenetre.blit(textSurf, textRect)
+	#fenetre.blit(textSurf, textRect)
 	
-	input_box0 = pg.Rect(100, 100, 140, 22 + 0*22)
-	input_box1 = pg.Rect(100, 100, 140, 22 + 1*22)
-	input_box2 = pg.Rect(100, 100, 140, 22 + 2*22)
-	input_box3 = pg.Rect(100, 100, 140, 22 + 3*22)
-	input_box4 = pg.Rect(100, 100, 140, 22 + 4*22)
-	input_box5 = pg.Rect(100, 100, 140, 22 + 5*22)
-	input_box6 = pg.Rect(100, 100, 140, 22 + 6*22)
-	input_box7 = pg.Rect(100, 100, 140, 22 + 7*22)
-	input_box8 = pg.Rect(100, 100, 140, 22 + 8*22)
-	input_box9 = pg.Rect(100, 100, 140, 22 + 9*22)
 	
+	for k in range (line):
+		inputbox.append(pygame.Rect(100, 100, 140, 22))
+		text.append('')
+		active.append(False)
+		color.append(cinactive)
+		
 	pygame.display.update(textRect)
 	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
 	namRect = namSurf.get_rect()
@@ -305,6 +308,12 @@ def levelEditor():
 	nmmRect = nmmSurf.get_rect()
 	nmmRect.topleft = (WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
 	fenetre.blit(nmmSurf, nmmRect)
+	
+	edSurf = DISPLAYFONT.render('Edit', True, WHITE)
+	edRect = edSurf.get_rect()
+	edRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-44)
+	fenetre.blit(edSurf, edRect)
+	
 	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
 	cancelRect = cancelSurf.get_rect()
 	cancelRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
@@ -318,15 +327,30 @@ def levelEditor():
 	while True :
 		for event in pygame.event.get():
 			if event.type == KEYDOWN:
-				if event.key == pygame.K_s:
-					displayStartmenu()
+				for k in range (line):
+					if active[k]:
+						if event.key == pygame.K_RETURN:
+							print(text[k])
+							text[k] = ''
+						elif event.key == pygame.K_BACKSPACE:
+							text[k] = (text[k])[:-1]
+						else:
+							text[k] += event.unicode
+					
+					
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
+					for k in range (line):
+						if inputbox[k].collidepoint(event.pos):
+							active[k] = True
+						else:
+							active[k] = False
+						color[k] = cactive if active[k] else cinactive
 					if (cancelRect.collidepoint(event.pos)):
 						displayStartmenu()
 					elif (savRect.collidepoint(event.pos)):
 						pass
-					elif (nmRect.collidepoint(event.pos)):
+					elif (edRect.collidepoint(event.pos)):
 						pass
 					elif (nmmRect.collidepoint(event.pos)):
 						nmSurf.fill(BLACK)
@@ -352,7 +376,17 @@ def levelEditor():
 				pygame.quit()
 				sys.exit()
 
-
+		for k in range (line):
+			# Render the current text.
+			txt_surface = DISPLAYFONT.render(text[k], True, color[k])
+			# Resize the box if the text is too long.
+			width = max(200, txt_surface.get_width()+10)
+			inputbox[k].w = width
+			# Blit the text.
+			fenetre.blit(txt_surface, (inputbox[k].x+5, inputbox[k].y+5))
+			# Blit the input_box rect.
+			pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+		pygame.display.flip()
 
 
 
