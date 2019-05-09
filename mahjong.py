@@ -359,6 +359,10 @@ def levelEditor():
 						color[k] = cactive if active[k] else cinactive
 					if (cancelRect.collidepoint(event.pos)):
 						if (f!=0):
+							u=f.name
+							f.close()
+							f = open(u,"w+")
+							f.write(g)
 							f.close()
 						displayStartmenu()
 					elif (savRect.collidepoint(event.pos)):
@@ -369,10 +373,14 @@ def levelEditor():
 							f.close()
 							f=0
 					elif (edRect.collidepoint(event.pos)):
+						if (f!=0):
+							f.close()
 						try:
+							g=''
 							f = open("levels/%d.txt" %(level),"r")
 							for i in range (line):
 								text[i] = f.readline()
+								g+=text[i]
 							f.close()
 						except FileNotFoundError:
 							pass
