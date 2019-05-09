@@ -274,28 +274,28 @@ def levelEditor():
 	textSurf = pygame.font.Font('freesansbold.ttf', 500).render('::', True, WHITE)
 	textSurf.fill(WHITE)
 	textRect = textSurf.get_rect()
-	textRect.topleft = (5*WINDOWWIDTH/20 , WINDOWHEIGHT/7)
+	textRect.topleft = (5*WINDOWWIDTH/20 -50 , WINDOWHEIGHT/7)
 	fenetre.blit(textSurf, textRect)
 	pygame.display.update(textRect)
 	
 	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
 	namRect = namSurf.get_rect()
-	namRect.topleft = (WINDOWWIDTH - 137, 4*WINDOWHEIGHT/8)
+	namRect.topleft = (WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
 	fenetre.blit(namSurf, namRect)
 	
 	nmpSurf = DISPLAYFONT.render('+', True, WHITE)
 	nmpRect = nmpSurf.get_rect()
-	nmpRect.topleft = (WINDOWWIDTH - 20, 4*WINDOWHEIGHT/8-22)
+	nmpRect.topleft = (WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
 	fenetre.blit(nmpSurf, nmpRect)
 	
-	nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
+	nmSurf = DISPLAYFONT.render('%d     ' % (level), True, WHITE)
 	nmRect = nmSurf.get_rect()
-	nmRect.topleft = (WINDOWWIDTH - 20, 4*WINDOWHEIGHT/8)
+	nmRect.topleft = (WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
 	fenetre.blit(nmSurf, nmRect)
 	
 	nmmSurf = DISPLAYFONT.render('-', True, WHITE)
 	nmmRect = nmmSurf.get_rect()
-	nmmRect.topleft = (WINDOWWIDTH - 18, 4*WINDOWHEIGHT/8+22)
+	nmmRect.topleft = (WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
 	fenetre.blit(nmmSurf, nmmRect)
 	
 	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
@@ -323,18 +323,18 @@ def levelEditor():
 					elif (nmRect.collidepoint(event.pos)):
 						pass
 					elif (nmmRect.collidepoint(event.pos)):
-						nmmSurf.fill(BLACK)
-						fenetre.blit(nmmSurf, nmmRect)
+						nmSurf.fill(BLACK)
+						fenetre.blit(nmSurf, nmRect)
 						if (level>0):
 							level-=1
 						else :
 							level = maxlvl
 						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
-						fenetre.blit(nmmSurf, nmRect)
+						fenetre.blit(nmSurf, nmRect)
 						pygame.display.update(nmRect)
 					elif (nmpRect.collidepoint(event.pos)):
-						nmpSurf.fill(BLACK)
-						fenetre.blit(nmpSurf, nmpRect)
+						nmSurf.fill(BLACK)
+						fenetre.blit(nmSurf, nmRect)
 						if (level<maxlvl):
 							level+=1
 						else :
