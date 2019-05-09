@@ -286,7 +286,7 @@ def levelEditor():
 	
 	
 	for k in range (line):
-		inputbox.append(pygame.Rect(100, 100, 140, 22))
+		inputbox.append(pygame.Rect(100, 100+ k*22, 140, 22))
 		text.append('')
 		active.append(False)
 		color.append(cinactive)
