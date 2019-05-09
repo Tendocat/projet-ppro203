@@ -266,6 +266,8 @@ def displayStartmenu():
 
 	
 def levelEditor():
+	level = 0
+	maxlvl = 100
 	fenetre.fill(BLACK)
 	pygame.display.flip()
 	
@@ -275,6 +277,26 @@ def levelEditor():
 	textRect.topleft = (5*WINDOWWIDTH/20 , WINDOWHEIGHT/7)
 	fenetre.blit(textSurf, textRect)
 	pygame.display.update(textRect)
+	
+	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
+	namRect = namSurf.get_rect()
+	namRect.topleft = (WINDOWWIDTH - 137, 4*WINDOWHEIGHT/8)
+	fenetre.blit(namSurf, namRect)
+	
+	nmpSurf = DISPLAYFONT.render('+', True, WHITE)
+	nmpRect = nmpSurf.get_rect()
+	nmpRect.topleft = (WINDOWWIDTH - 20, 4*WINDOWHEIGHT/8-22)
+	fenetre.blit(nmpSurf, nmpRect)
+	
+	nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
+	nmRect = nmSurf.get_rect()
+	nmRect.topleft = (WINDOWWIDTH - 20, 4*WINDOWHEIGHT/8)
+	fenetre.blit(nmSurf, nmRect)
+	
+	nmmSurf = DISPLAYFONT.render('-', True, WHITE)
+	nmmRect = nmmSurf.get_rect()
+	nmmRect.topleft = (WINDOWWIDTH - 18, 4*WINDOWHEIGHT/8+22)
+	fenetre.blit(nmmSurf, nmmRect)
 	
 	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
 	cancelRect = cancelSurf.get_rect()
@@ -296,11 +318,33 @@ def levelEditor():
 				if event.button == 1:
 					if (cancelRect.collidepoint(event.pos)):
 						displayStartmenu()
-					if (savRect.collidepoint(event.pos)):
+					elif (savRect.collidepoint(event.pos)):
 						pass
+					elif (nmRect.collidepoint(event.pos)):
+						pass
+					elif (nmmRect.collidepoint(event.pos)):
+						nmmSurf.fill(BLACK)
+						fenetre.blit(nmmSurf, nmmRect)
+						if (level>0):
+							level-=1
+						else :
+							level = maxlvl
+						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nmmSurf, nmRect)
+						pygame.display.update(nmRect)
+					elif (nmpRect.collidepoint(event.pos)):
+						nmpSurf.fill(BLACK)
+						fenetre.blit(nmpSurf, nmpRect)
+						if (level<maxlvl):
+							level+=1
+						else :
+							level = 0
+						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nmSurf, nmRect)
+						pygame.display.update(nmRect)
 			if event.type == QUIT:
 				pygame.quit()
-				system.exit()
+				sys.exit()
 
 
 
