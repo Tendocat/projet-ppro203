@@ -308,8 +308,6 @@ def displayStartmenu():
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
 					if (startu[1].collidepoint(event.pos)):
-						start(randint(0, 9))
-					elif (cd[1].collidepoint(event.pos)):
 						start(diff)
 					elif (cdminus[1].collidepoint(event.pos)):
 						cddis[0].fill(RED)
