@@ -538,8 +538,6 @@ def levelEditor():
 
 
 
-
-
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
 #@param deux positions à comparer
 #return true si tuiles égales/ on peut ajouter les familles ici
@@ -587,8 +585,9 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 
 	
 	
-def start(level = 0, edit = False):
-	creer_level(level)
+def start(level = 0, edit = False, again = False):
+	if not again:
+		creer_level(level)
 	commencer = 1
 	global startmenu
 	global nbclick
