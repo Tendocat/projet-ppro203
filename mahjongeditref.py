@@ -416,36 +416,16 @@ def levelEditor():
 		txt_surface.append(k)
 		
 	pygame.display.update(textRect)
-	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
-	namRect = namSurf.get_rect()
-	namRect.topleft = (WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
-	fenetre.blit(namSurf, namRect)
-	nmpSurf = DISPLAYFONT.render('+', True, WHITE)
-	nmpRect = nmpSurf.get_rect()
-	nmpRect.topleft = (WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
-	fenetre.blit(nmpSurf, nmpRect)
-	nmSurf = DISPLAYFONT.render('%d     ' % (level), True, WHITE)
-	nmRect = nmSurf.get_rect()
-	nmRect.topleft = (WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
-	fenetre.blit(nmSurf, nmRect)
-	nmmSurf = DISPLAYFONT.render('-', True, WHITE)
-	nmmRect = nmmSurf.get_rect()
-	nmmRect.topleft = (WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
-	fenetre.blit(nmmSurf, nmmRect)
 	
-	edSurf = DISPLAYFONT.render('Edit', True, WHITE)
-	edRect = edSurf.get_rect()
-	edRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-44)
-	fenetre.blit(edSurf, edRect)
+	nam     =  buttonmj('Choose level', WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
+	nmp     =  buttonmj('+', WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
+	nm      =  buttonmj('%d     ' % (level), WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
+	nmm     =  buttonmj('-', WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
+	ed      =  buttonmj('Edit', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-44)
+	cancel  =  buttonmj('Cancel', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
+	sav     =  buttonmj('Save', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
+
 	
-	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
-	cancelRect = cancelSurf.get_rect()
-	cancelRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
-	fenetre.blit(cancelSurf, cancelRect)
-	savSurf = DISPLAYFONT.render('Save', True, WHITE)
-	savRect = savSurf.get_rect()
-	savRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
-	fenetre.blit(savSurf, savRect)
 	fenetre.blit(textSurf, textRect)
 	pygame.display.update(textRect)
 	for k in range (line):
@@ -484,7 +464,7 @@ def levelEditor():
 						else:
 							active[k] = False
 						color[k] = cactive if active[k] else cinactive
-					if (cancelRect.collidepoint(event.pos)):
+					if (cancel[1].collidepoint(event.pos)):
 						if (f!=0):
 							u=f.name
 							f.close()
@@ -492,14 +472,14 @@ def levelEditor():
 							f.write(g)
 							f.close()
 						displayStartmenu()
-					elif (savRect.collidepoint(event.pos)):
+					elif (sav[1].collidepoint(event.pos)):
 						if f!=0:
 							for i in range (line):
 								f.write(text[i]+'\n')
 								text[i] = ''
 							f.close()
 							f=0
-					elif (edRect.collidepoint(event.pos)):
+					elif (ed[1].collidepoint(event.pos)):
 						if (f!=0):
 							f.close()
 						try:
@@ -512,26 +492,26 @@ def levelEditor():
 						except FileNotFoundError:
 							pass
 						f = open("levels/edit%d.txt" %(level),"w+")
-					elif (nmmRect.collidepoint(event.pos)):
-						nmSurf.fill(BLACK)
-						fenetre.blit(nmSurf, nmRect)
+					elif (nmm[1].collidepoint(event.pos)):
+						nm[0].fill(BLACK)
+						fenetre.blit(nm[0], nm[1])
 						if (level>0):
 							level-=1
 						else :
 							level = maxlvl
-						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
-						fenetre.blit(nmSurf, nmRect)
-						pygame.display.update(nmRect)
-					elif (nmpRect.collidepoint(event.pos)):
-						nmSurf.fill(BLACK)
-						fenetre.blit(nmSurf, nmRect)
+						nm[0] = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nm[0], nm[1])
+						pygame.display.update(nm[1])
+					elif (nmp[1].collidepoint(event.pos)):
+						nm[0].fill(BLACK)
+						fenetre.blit(nm[0], nm[1])
 						if (level<maxlvl):
 							level+=1
 						else :
 							level = 0
-						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
-						fenetre.blit(nmSurf, nmRect)
-						pygame.display.update(nmRect)
+						nm[0] = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nm[0], nm[1])
+						pygame.display.update(nm[1])
 				fenetre.blit(textSurf, textRect)
 				pygame.display.update(textRect)
 				for k in range (line):
@@ -545,8 +525,6 @@ def levelEditor():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-		
-				
 
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
