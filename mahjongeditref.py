@@ -200,6 +200,7 @@ def refresh_initialiation(tableau, level, nbPaire, startmenu, edit):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire, level)
 	b = displayMenuButton()
+	pygame.display.flip() #Rafraichissement
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
 			for n in range (2):
