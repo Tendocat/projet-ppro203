@@ -447,6 +447,15 @@ def levelEditor():
 	savRect = savSurf.get_rect()
 	savRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
 	fenetre.blit(savSurf, savRect)
+	fenetre.blit(textSurf, textRect)
+	pygame.display.update(textRect)
+	for k in range (line):
+		txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
+		width = max(200, txt_surface[k].get_width()+10)
+		inputbox[k].w = width
+		fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
+		pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+		pygame.display.update(inputbox[k])
 	pygame.display.flip()
 	#fenetre.blit(mahjongSurf, mahjongRect)
 	while True :
