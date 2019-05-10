@@ -108,11 +108,11 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 	else :
 		nom_fichier = 'levels/edit' + (str)(nom_fichier) + '.txt'
 	with open(nom_fichier, 'r') as fichier:
-		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
+		for y in range(HEIGHT, HEIGHT*9, HEIGHT):
 			ligne = fichier.readline()
 			col = 0
 			t = []
-			for x in range(WIDTH, WIDTH*10, WIDTH):
+			for x in range(WIDTH, WIDTH*11, WIDTH):
 				if col < len(ligne):
 					if ligne[col] == '1':
 						t.append([tuile[0], (x,y)])
@@ -654,13 +654,10 @@ def start(level = 0, edit = False, again = False):
 								tmin +=1
 								tsec -= 60
 							gameOverScreen(tmin, tsec, nbclick, nbPaire)
-							nextlvlSurf = DISPLAYFONT.render('Next Level', True, WHITE)
-							nextlvlRect = nextlvlSurf.get_rect()
-							nextlvlRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+44)
-							fenetre.blit(nextlvlSurf, nextlvlRect)
+							nextlvl  = buttonmj('Next Level', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+44)
 							pygame.display.flip()
 							while True:
-								eventInGame(startmenu, level, b[0] , b[1], edit, nextlvlRect)
+								eventInGame(startmenu, level, b[0] , b[1], edit, nextlvl[1])
 							
 						b = refresh(tableau, level, nbPaire)
 					else :
@@ -694,7 +691,10 @@ def eventInGame(startmenu, level, menuRect, restartRect, edit, nextlvlRect = 0):
 			elif (restartRect.collidepoint(event.pos)):
 				start(level, edit, True)
 			elif ((nextlvlRect !=0) and (nextlvlRect.collidepoint(event.pos))):
-				start(level+1)
+				if ((level+1)<10):
+					start(level+1)
+				else:
+					start(level)
 				
 
 
