@@ -335,7 +335,16 @@ def displayStartmenu():
 					
 					
 					elif (startedit[1].collidepoint(event.pos)):
-						start(diffedit, True)
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							start(diffedit, True)
+						
 					elif (cdminusedit[1].collidepoint(event.pos)):
 						cddisedit[0].fill(RED)
 						fenetre.blit(cddisedit[0], cddisedit[1])
@@ -343,7 +352,17 @@ def displayStartmenu():
 							diffedit = maxilvledit
 						else :
 							diffedit-=1
-						cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						else:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, (100,100,100))
 						fenetre.blit(cddisedit[0], cddisedit[1])
 						pygame.display.update(cddisedit[1])
 					elif (cdplusedit[1].collidepoint(event.pos)):
@@ -353,7 +372,17 @@ def displayStartmenu():
 							diffedit+=1
 						else:
 							diffedit = 0
-						cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						else:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, (100,100,100))
 						fenetre.blit(cddisedit[0], cddisedit[1])
 						pygame.display.update(cddisedit[1])
 
@@ -574,7 +603,7 @@ def start(level = 0, edit = False):
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			tableau = generation_tab_fichier(tuile, level, edit = False)
+			tableau = generation_tab_fichier(tuile, level, edit)
 			refresh_initialiation(tableau, level, nbPaire, startmenu)
 			select = (-1, -1)
 			commencer = 0
