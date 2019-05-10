@@ -194,7 +194,7 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 					col += 1
 			tableau.append(t)
 	return tableau
-	
+
 #refresh initialiation affichage tuiles differe	
 def refresh_initialiation(tableau, level, nbPaire, startmenu):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
@@ -556,8 +556,6 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	pygame.display.flip()
 	nbPaire=0
 
-
-
 	
 	
 def start(level = 0, edit = False):
@@ -656,7 +654,7 @@ def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
 				displayStartmenu()
 			elif (restartRect.collidepoint(event.pos)):
 				start(level)
-			elif ((nextlvlRect.collidepoint(event.pos))and (nextlvlRect !=0)):
+			elif ((nextlvlRect !=0) and (nextlvlRect.collidepoint(event.pos))):
 				start(level+1)
 				
 
