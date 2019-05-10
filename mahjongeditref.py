@@ -239,28 +239,16 @@ def tuile_position(p, tableau):
 
 	
 def displayScore(nb, level):
-	scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
-	scoreRect = scoreSurf.get_rect()
-	scoreRect.topleft = (WINDOWWIDTH - 120, 35)
-	fenetre.blit(scoreSurf, scoreRect)
-	clvlSurf = DISPLAYFONT.render('Level %d' %(level), True, WHITE)
-	clvlRect = clvlSurf.get_rect()
-	clvlRect.topleft = (WINDOWWIDTH - 120, 10)
-	fenetre.blit(clvlSurf, clvlRect)
+	score = buttonmj('Score: %d' % (nb), WINDOWWIDTH - 120, 35)
+	clvl  = buttonmj('Level %d' %(level), WINDOWWIDTH - 120, 10)
+	
 	
 def displayMenuButton():
-	global menuRect
-	global restartRect
-	menuSurf = DISPLAYFONT.render('Menu', True, WHITE)
-	menuRect = menuSurf.get_rect()
-	menuRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
-	fenetre.blit(menuSurf, menuRect)
-	restartSurf = DISPLAYFONT.render('Start Again', True, WHITE)
-	restartRect = restartSurf.get_rect()
-	restartRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
-	fenetre.blit(restartSurf, restartRect)
-	buttonsGame[0]=menuRect
-	buttonsGame[1]=restartRect
+	buttonsGame =  [0]*2
+	menu        =  buttonmj('Menu', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
+	restart     =  buttonmj('Start Again', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
+	buttonsGame[0]=menu[1]
+	buttonsGame[1]=restart[1]
 	return buttonsGame
 	
 def buttonmj(content, width, height):
@@ -693,7 +681,6 @@ startmenu = 0
 nbclick = 0
 nbPaire = 0
 
-buttonsGame = [0]*3
 
 
 
