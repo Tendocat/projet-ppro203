@@ -196,15 +196,15 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 	return tableau
 
 #refresh initialiation affichage tuiles differe	
-def refresh_initialiation(tableau, level, nbPaire, startmenu):
+def refresh_initialiation(tableau, level, nbPaire, startmenu, edit):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire, level)
 	b = displayMenuButton()
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
-			for n in range (4):
+			for n in range (2):
 				time.sleep(0.1)
-				eventInGame(startmenu, level, b[0], b[1])
+				eventInGame(startmenu, level, b[0], b[1], edit)
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 			pygame.display.flip() #Rafraichissement
 	
@@ -606,7 +606,7 @@ def start(level = 0, edit = False, again = False):
 			displayStartmenu()
 		if commencer:
 			tableau = generation_tab_fichier(tuile, level, edit)
-			refresh_initialiation(tableau, level, nbPaire, startmenu)
+			refresh_initialiation(tableau, level, nbPaire, startmenu, edit)
 			select = (-1, -1)
 			commencer = 0
 		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
@@ -622,7 +622,7 @@ def start(level = 0, edit = False, again = False):
 						time.sleep(0.2)
 						start(level)
 					elif (restartRect.collidepoint(event.pos)):
-						start(level)
+						start(level, edit, True)
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						b = refresh(tableau, level, nbPaire)
 						select = (-1, -1)
@@ -652,7 +652,7 @@ def start(level = 0, edit = False, again = False):
 							fenetre.blit(nextlvlSurf, nextlvlRect)
 							pygame.display.flip()
 							while True:
-								eventInGame(startmenu, level, b[0] , b[1], nextlvlRect)
+								eventInGame(startmenu, level, b[0] , b[1], edit, nextlvlRect)
 							
 						b = refresh(tableau, level, nbPaire)
 					else :
@@ -669,7 +669,7 @@ def start(level = 0, edit = False, again = False):
 
 	print('EXIT')
 	
-def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
+def eventInGame(startmenu, level, menuRect, restartRect, edit, nextlvlRect = 0):
 	for event in pygame.event.get():
 		if event.type == KEYDOWN:
 			if event.key == pygame.K_s:
@@ -684,7 +684,7 @@ def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
 			if (menuRect.collidepoint(event.pos)):
 				displayStartmenu()
 			elif (restartRect.collidepoint(event.pos)):
-				start(level, False, True)
+				start(level, edit, True)
 			elif ((nextlvlRect !=0) and (nextlvlRect.collidepoint(event.pos))):
 				start(level+1)
 				
