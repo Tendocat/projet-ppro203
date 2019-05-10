@@ -58,7 +58,7 @@ def random_tableau_fichier(ligne = 8, colonne = 6, nom_fichier = 'levels/random.
 				
 				a = 0
 				while  a != 1:
-					cc = randint(0,colonne-1)
+					cc = randint(0,ligne-1-l)
 					b = randint(0,1)
 					if b == 0:
 						ll = l
@@ -112,7 +112,7 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 			ligne = fichier.readline()
 			col = 0
 			t = []
-			for x in range(WIDTH, WIDTH*10, WIDTH):
+			for x in range(WIDTH, WIDTH*11, WIDTH):
 				if col < len(ligne):
 					if ligne[col] == '1':
 						t.append([tuile[0], (x,y)])
@@ -619,7 +619,7 @@ def start(level = 0, edit = False):
 					nbclick += 1
 					if (menuRect.collidepoint(event.pos)):
 						startmenu = 0
-						time.sleep(0.2)
+						time.sleep(0.1)
 						start(level)
 					elif (restartRect.collidepoint(event.pos)):
 						start(level)
