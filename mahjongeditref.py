@@ -524,6 +524,8 @@ def levelEditor():
 						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
 						fenetre.blit(nmSurf, nmRect)
 						pygame.display.update(nmRect)
+				fenetre.blit(textSurf, textRect)
+				pygame.display.update(textRect)
 				for k in range (line):
 					txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
 					width = max(200, txt_surface[k].get_width()+10)
@@ -531,11 +533,12 @@ def levelEditor():
 					fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
 					pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
 					pygame.display.update(inputbox[k])
+				
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
 		
-
+				
 
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
@@ -681,7 +684,7 @@ def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
 			if (menuRect.collidepoint(event.pos)):
 				displayStartmenu()
 			elif (restartRect.collidepoint(event.pos)):
-				start(level)
+				start(level, False, True)
 			elif ((nextlvlRect !=0) and (nextlvlRect.collidepoint(event.pos))):
 				start(level+1)
 				
