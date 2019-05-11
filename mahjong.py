@@ -63,7 +63,7 @@ def random_tableau_fichier(ligne = 8, colonne = 6, nom_fichier = 'levels/random.
 					if b == 0:
 						ll = l
 					elif b == 1:
-						ll = colonne-l
+						ll = ligne-1-l
 				
 					if tableau[cc][ll] == 0:
 						tableau[cc][ll] = ajouter
@@ -112,7 +112,7 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 			ligne = fichier.readline()
 			col = 0
 			t = []
-			for x in range(WIDTH, WIDTH*10, WIDTH):
+			for x in range(WIDTH, WIDTH*11 WIDTH):
 				if col < len(ligne):
 					if ligne[col] == '1':
 						t.append([tuile[0], (x,y)])
