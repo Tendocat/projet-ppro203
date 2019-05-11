@@ -63,7 +63,7 @@ def random_tableau_fichier(ligne = 8, colonne = 6, nom_fichier = 'levels/random.
 					if b == 0:
 						ll = l
 					elif b == 1:
-						ll = ligne-1-l
+						ll = colonne-l
 				
 					if tableau[cc][ll] == 0:
 						tableau[cc][ll] = ajouter
@@ -108,11 +108,11 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 	else :
 		nom_fichier = 'levels/edit' + (str)(nom_fichier) + '.txt'
 	with open(nom_fichier, 'r') as fichier:
-		for y in range(HEIGHT, HEIGHT*10, HEIGHT):
+		for y in range(HEIGHT, HEIGHT*9, HEIGHT):
 			ligne = fichier.readline()
 			col = 0
 			t = []
-			for x in range(WIDTH, WIDTH*11 WIDTH):
+			for x in range(WIDTH, WIDTH*11, WIDTH):
 				if col < len(ligne):
 					if ligne[col] == '1':
 						t.append([tuile[0], (x,y)])
@@ -194,17 +194,18 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 					col += 1
 			tableau.append(t)
 	return tableau
-	
+
 #refresh initialiation affichage tuiles differe	
-def refresh_initialiation(tableau, level, nbPaire, startmenu):
+def refresh_initialiation(tableau, level, nbPaire, startmenu, edit):
 	fenetre.blit(fond, (0,0))#ecrase tout avec le fond
 	displayScore(nbPaire, level)
 	b = displayMenuButton()
+	pygame.display.flip() #Rafraichissement
 	for ligne in range(len(tableau)):
 		for tuile in tableau[ligne]:
-			for n in range (4):
+			for n in range (2):
 				time.sleep(0.1)
-				eventInGame(startmenu, level, b[0], b[1])
+				eventInGame(startmenu, level, b[0], b[1], edit)
 			fenetre.blit(tuile[0], tuile[1])#0 = image; 1 = coordonnees
 			pygame.display.flip() #Rafraichissement
 	
@@ -238,34 +239,27 @@ def tuile_position(p, tableau):
 
 	
 def displayScore(nb, level):
-	scoreSurf = DISPLAYFONT.render('Score: %d' % (nb), True, WHITE)
-	scoreRect = scoreSurf.get_rect()
-	scoreRect.topleft = (WINDOWWIDTH - 120, 35)
-	fenetre.blit(scoreSurf, scoreRect)
-	clvlSurf = DISPLAYFONT.render('Level %d' %(level), True, WHITE)
-	clvlRect = clvlSurf.get_rect()
-	clvlRect.topleft = (WINDOWWIDTH - 120, 10)
-	fenetre.blit(clvlSurf, clvlRect)
+	score = buttonmj('Score: %d' % (nb), WINDOWWIDTH - 120, 35)
+	clvl  = buttonmj('Level %d' %(level), WINDOWWIDTH - 120, 10)
+	
 	
 def displayMenuButton():
-	global menuRect
-	global restartRect
-	menuSurf = DISPLAYFONT.render('Menu', True, WHITE)
-	menuRect = menuSurf.get_rect()
-	menuRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
-	fenetre.blit(menuSurf, menuRect)
-	restartSurf = DISPLAYFONT.render('Start Again', True, WHITE)
-	restartRect = restartSurf.get_rect()
-	restartRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
-	fenetre.blit(restartSurf, restartRect)
-	buttonsGame[0]=menuRect
-	buttonsGame[1]=restartRect
+	buttonsGame =  [0]*2
+	menu        =  buttonmj('Menu', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8)
+	restart     =  buttonmj('Start Again', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+22)
+	buttonsGame[0]=menu[1]
+	buttonsGame[1]=restart[1]
 	return buttonsGame
 	
-
+def buttonmj(content, width, height):
+	a = [0]*2
+	a[0] = DISPLAYFONT.render(content, True, WHITE)
+	a[1] = a[0].get_rect()
+	a[1].topleft = (width, height)
+	fenetre.blit(a[0], a[1])
+	return a
 	
 def displayStartmenu():
-	global startmenu
 	menu = 1
 	diff = 0
 	maxilvl = 9
@@ -276,61 +270,20 @@ def displayStartmenu():
 	fenetre.fill(RED)
 	mahjongRect.midtop = (WINDOWWIDTH/2 , WINDOWHEIGHT/3)
 	fenetre.blit(mahjongSurf, mahjongRect)
-	startSurf = DISPLAYFONT.render('Start random', True, WHITE)
-	startRect = startSurf.get_rect()
-	startRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-44)
-	fenetre.blit(startSurf, startRect)
-	cdSurf = DISPLAYFONT.render('Choose level', True, WHITE)
-	cdRect = cdSurf.get_rect()
-	cdRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-22)
-	fenetre.blit(cdSurf, cdRect)
-	cdminusSurf = DISPLAYFONT.render('-', True, WHITE)
-	cdminusRect = cdminusSurf.get_rect()
-	cdminusRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8)
-	fenetre.blit(cdminusSurf, cdminusRect)
-	cddisSurf = DISPLAYFONT.render('0', True, WHITE)
-	cddisRect = cddisSurf.get_rect()
-	cddisRect.topleft = (WINDOWWIDTH - 155+65, 7*WINDOWHEIGHT/8)
-	fenetre.blit(cddisSurf, cddisRect)
-	cdplusSurf = DISPLAYFONT.render('+', True, WHITE)
-	cdplusRect = cdplusSurf.get_rect()
-	cdplusRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
-	fenetre.blit(cdplusSurf, cdplusRect)
 	
 	
+	startu      = buttonmj('Start random', WINDOWWIDTH - 145 , 7*WINDOWHEIGHT/8-44)
+	cd          = buttonmj('Choose level', WINDOWWIDTH - 145 , 7*WINDOWHEIGHT/8-22)
+	cdminus     = buttonmj('-', WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8)
+	cddis       = buttonmj('%d     '%(diff), WINDOWWIDTH - 155+65, 7*WINDOWHEIGHT/8)	
+	cdplus      = buttonmj('+', WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8)
+	startedit   = buttonmj('Start edit level', WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-44-88)
+	cdedit      = buttonmj('Choose edit level', WINDOWWIDTH - 155, 7*WINDOWHEIGHT/8-22-88)
+	cdminusedit = buttonmj('-', WINDOWWIDTH - 155 + 25, 7*WINDOWHEIGHT/8-88)
+	cddisedit   = buttonmj('%d     '%(diffedit), WINDOWWIDTH - 155 + 55, 7*WINDOWHEIGHT/8-88)
+	cdplusedit  = buttonmj('+', WINDOWWIDTH - 155 + 105, 7*WINDOWHEIGHT/8-88)
+	edit        = buttonmj('Level Editor', WINDOWWIDTH - 155 +12, 7*WINDOWHEIGHT/8+22)
 	
-	starteditSurf = DISPLAYFONT.render('Start edit level', True, WHITE)
-	starteditRect = starteditSurf.get_rect()
-	starteditRect.topleft = (WINDOWWIDTH - 145, 7*WINDOWHEIGHT/8-44-88)
-	fenetre.blit(starteditSurf, starteditRect)
-	cdeditSurf = DISPLAYFONT.render('Choose edit level', True, WHITE)
-	cdeditRect = cdeditSurf.get_rect()
-	cdeditRect.topleft = (WINDOWWIDTH - 155, 7*WINDOWHEIGHT/8-22 -88)
-	fenetre.blit(cdeditSurf, cdeditRect)
-	
-	cdminuseditSurf = DISPLAYFONT.render('-', True, WHITE)
-	cdminuseditRect = cdminuseditSurf.get_rect()
-	cdminuseditRect.topleft = (WINDOWWIDTH - 155+25, 7*WINDOWHEIGHT/8 -88)
-	fenetre.blit(cdminuseditSurf, cdminuseditRect)
-	
-	cddiseditSurf = DISPLAYFONT.render('%d     '%(diffedit), True, WHITE)
-	cddiseditRect = cddiseditSurf.get_rect()
-	cddiseditRect.topleft = (WINDOWWIDTH - 155+55, 7*WINDOWHEIGHT/8-88)
-	fenetre.blit(cddiseditSurf, cddiseditRect)
-	
-	cdpluseditSurf = DISPLAYFONT.render('+', True, WHITE)
-	cdpluseditRect = cdpluseditSurf.get_rect()
-	cdpluseditRect.topleft = (WINDOWWIDTH - 155+105, 7*WINDOWHEIGHT/8-88)
-	fenetre.blit(cdpluseditSurf, cdpluseditRect)
-	
-	
-	
-	
-	
-	editSurf = DISPLAYFONT.render('Level Editor', True, WHITE)
-	editRect = editSurf.get_rect()
-	editRect.topleft = (WINDOWWIDTH - 155 + 12, 7*WINDOWHEIGHT/8+22)
-	fenetre.blit(editSurf, editRect)
 	pygame.display.flip()
 	while menu :
 		for event in pygame.event.get():
@@ -342,56 +295,83 @@ def displayStartmenu():
 				sys.exit()
 			if event.type == MOUSEBUTTONDOWN:
 				if event.button == 1:
-					if (startRect.collidepoint(event.pos)):
-						start(randint(0, 9))
-					elif (cdRect.collidepoint(event.pos)):
+					if (startu[1].collidepoint(event.pos)):
 						start(diff)
-					elif (cdminusRect.collidepoint(event.pos)):
-						cddisSurf.fill(RED)
-						fenetre.blit(cddisSurf, cddisRect)
+					elif (cdminus[1].collidepoint(event.pos)):
+						cddis[0].fill(RED)
+						fenetre.blit(cddis[0], cddis[1])
 						if (diff==0):
 							diff = maxilvl
 						else :
 							diff-=1
-						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
-						fenetre.blit(cddisSurf, cddisRect)
-						pygame.display.update(cddisRect)
-					elif (cdplusRect.collidepoint(event.pos)):
-						cddisSurf.fill(RED)
-						fenetre.blit(cddisSurf, cddisRect)
+						cddis[0] = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						fenetre.blit(cddis[0], cddis[1])
+						pygame.display.update(cddis[1])
+					elif (cdplus[1].collidepoint(event.pos)):
+						cddis[0].fill(RED)
+						fenetre.blit(cddis[0], cddis[1])
 						if (diff<maxilvl):
 							diff+=1
 						else:
 							diff = 0
-						cddisSurf = DISPLAYFONT.render('%d' % (diff), True, WHITE)
-						fenetre.blit(cddisSurf, cddisRect)
-						pygame.display.update(cddisRect)
-					elif (editRect.collidepoint(event.pos)):
+						cddis[0] = DISPLAYFONT.render('%d' % (diff), True, WHITE)
+						fenetre.blit(cddis[0], cddis[1])
+						pygame.display.update(cddis[1])
+					elif (edit[1].collidepoint(event.pos)):
 						levelEditor()
 					
 					
-					elif (starteditRect.collidepoint(event.pos)):
-						start(diffedit, True)
-					elif (cdminuseditRect.collidepoint(event.pos)):
-						cddiseditSurf.fill(RED)
-						fenetre.blit(cddiseditSurf, cddiseditRect)
+					elif (startedit[1].collidepoint(event.pos)):
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							start(diffedit, True)
+						
+					elif (cdminusedit[1].collidepoint(event.pos)):
+						cddisedit[0].fill(RED)
+						fenetre.blit(cddisedit[0], cddisedit[1])
 						if (diffedit==0):
 							diffedit = maxilvledit
 						else :
 							diffedit-=1
-						cddiseditSurf = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
-						fenetre.blit(cddiseditSurf, cddiseditRect)
-						pygame.display.update(cddiseditRect)
-					elif (cdpluseditRect.collidepoint(event.pos)):
-						cddiseditSurf.fill(RED)
-						fenetre.blit(cddiseditSurf, cddiseditRect)
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						else:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, (100,100,100))
+						fenetre.blit(cddisedit[0], cddisedit[1])
+						pygame.display.update(cddisedit[1])
+					elif (cdplusedit[1].collidepoint(event.pos)):
+						cddisedit[0].fill(RED)
+						fenetre.blit(cddisedit[0], cddisedit[1])
 						if (diffedit<maxilvledit):
 							diffedit+=1
 						else:
 							diffedit = 0
-						cddiseditSurf = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
-						fenetre.blit(cddiseditSurf, cddiseditRect)
-						pygame.display.update(cddiseditRect)
+						c = 0
+						try:
+							f = open("levels/edit%d.txt" %(diffedit),"r")
+							f.close()
+							c = 1
+						except FileNotFoundError:
+							pass
+						if c:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, WHITE)
+						else:
+							cddisedit[0] = DISPLAYFONT.render('%d' % (diffedit), True, (100,100,100))
+						fenetre.blit(cddisedit[0], cddisedit[1])
+						pygame.display.update(cddisedit[1])
 
 	
 def levelEditor():
@@ -424,36 +404,25 @@ def levelEditor():
 		txt_surface.append(k)
 		
 	pygame.display.update(textRect)
-	namSurf = DISPLAYFONT.render('Choose level', True, WHITE)
-	namRect = namSurf.get_rect()
-	namRect.topleft = (WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
-	fenetre.blit(namSurf, namRect)
-	nmpSurf = DISPLAYFONT.render('+', True, WHITE)
-	nmpRect = nmpSurf.get_rect()
-	nmpRect.topleft = (WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
-	fenetre.blit(nmpSurf, nmpRect)
-	nmSurf = DISPLAYFONT.render('%d     ' % (level), True, WHITE)
-	nmRect = nmSurf.get_rect()
-	nmRect.topleft = (WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
-	fenetre.blit(nmSurf, nmRect)
-	nmmSurf = DISPLAYFONT.render('-', True, WHITE)
-	nmmRect = nmmSurf.get_rect()
-	nmmRect.topleft = (WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
-	fenetre.blit(nmmSurf, nmmRect)
 	
-	edSurf = DISPLAYFONT.render('Edit', True, WHITE)
-	edRect = edSurf.get_rect()
-	edRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-44)
-	fenetre.blit(edSurf, edRect)
+	nam     =  buttonmj('Choose level', WINDOWWIDTH - 170, 4*WINDOWHEIGHT/8)
+	nmp     =  buttonmj('+', WINDOWWIDTH - 40, 4*WINDOWHEIGHT/8-22)
+	nm      =  buttonmj('%d     ' % (level), WINDOWWIDTH - 45, 4*WINDOWHEIGHT/8)
+	nmm     =  buttonmj('-', WINDOWWIDTH - 38, 4*WINDOWHEIGHT/8+22)
+	ed      =  buttonmj('Edit', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-44)
+	cancel  =  buttonmj('Cancel', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
+	sav     =  buttonmj('Save', WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
+
 	
-	cancelSurf = DISPLAYFONT.render('Cancel', True, WHITE)
-	cancelRect = cancelSurf.get_rect()
-	cancelRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8-22)
-	fenetre.blit(cancelSurf, cancelRect)
-	savSurf = DISPLAYFONT.render('Save', True, WHITE)
-	savRect = savSurf.get_rect()
-	savRect.topleft = (WINDOWWIDTH - 105, 7*WINDOWHEIGHT/8)
-	fenetre.blit(savSurf, savRect)
+	fenetre.blit(textSurf, textRect)
+	pygame.display.update(textRect)
+	for k in range (line):
+		txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
+		width = max(200, txt_surface[k].get_width()+10)
+		inputbox[k].w = width
+		fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
+		pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+		pygame.display.update(inputbox[k])
 	pygame.display.flip()
 	#fenetre.blit(mahjongSurf, mahjongRect)
 	while True :
@@ -483,7 +452,7 @@ def levelEditor():
 						else:
 							active[k] = False
 						color[k] = cactive if active[k] else cinactive
-					if (cancelRect.collidepoint(event.pos)):
+					if (cancel[1].collidepoint(event.pos)):
 						if (f!=0):
 							u=f.name
 							f.close()
@@ -491,14 +460,14 @@ def levelEditor():
 							f.write(g)
 							f.close()
 						displayStartmenu()
-					elif (savRect.collidepoint(event.pos)):
+					elif (sav[1].collidepoint(event.pos)):
 						if f!=0:
 							for i in range (line):
 								f.write(text[i]+'\n')
 								text[i] = ''
 							f.close()
 							f=0
-					elif (edRect.collidepoint(event.pos)):
+					elif (ed[1].collidepoint(event.pos)):
 						if (f!=0):
 							f.close()
 						try:
@@ -511,33 +480,39 @@ def levelEditor():
 						except FileNotFoundError:
 							pass
 						f = open("levels/edit%d.txt" %(level),"w+")
-					elif (nmmRect.collidepoint(event.pos)):
-						nmSurf.fill(BLACK)
-						fenetre.blit(nmSurf, nmRect)
+					elif (nmm[1].collidepoint(event.pos)):
+						nm[0].fill(BLACK)
+						fenetre.blit(nm[0], nm[1])
 						if (level>0):
 							level-=1
 						else :
 							level = maxlvl
-						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
-						fenetre.blit(nmSurf, nmRect)
-						pygame.display.update(nmRect)
-					elif (nmpRect.collidepoint(event.pos)):
-						nmSurf.fill(BLACK)
-						fenetre.blit(nmSurf, nmRect)
+						nm[0] = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nm[0], nm[1])
+						pygame.display.update(nm[1])
+					elif (nmp[1].collidepoint(event.pos)):
+						nm[0].fill(BLACK)
+						fenetre.blit(nm[0], nm[1])
 						if (level<maxlvl):
 							level+=1
 						else :
 							level = 0
-						nmSurf = DISPLAYFONT.render('%d' % (level), True, WHITE)
-						fenetre.blit(nmSurf, nmRect)
-						pygame.display.update(nmRect)
+						nm[0] = DISPLAYFONT.render('%d' % (level), True, WHITE)
+						fenetre.blit(nm[0], nm[1])
+						pygame.display.update(nm[1])
+				fenetre.blit(textSurf, textRect)
+				pygame.display.update(textRect)
+				for k in range (line):
+					txt_surface[k] = DISPLAYFONT.render(text[k], True, color[k])
+					width = max(200, txt_surface[k].get_width()+10)
+					inputbox[k].w = width
+					fenetre.blit(txt_surface[k], (inputbox[k].x+5, inputbox[k].y+5))
+					pygame.draw.rect(fenetre, color[k], inputbox[k], 2)
+					pygame.display.update(inputbox[k])
+				
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-		
-
-
-
 
 
 #test si deux tuiles à deux positions différentes sont égales et les suppriment si c'est le cas
@@ -585,12 +560,11 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	pygame.display.flip()
 	nbPaire=0
 
-
-
 	
 	
-def start(level = 0, edit = False):
-	creer_level(level)
+def start(level = 0, edit = False, again = False):
+	if not again:
+		creer_level(level)
 	commencer = 1
 	global startmenu
 	global nbclick
@@ -605,8 +579,8 @@ def start(level = 0, edit = False):
 			startmenu = 1
 			displayStartmenu()
 		if commencer:
-			tableau = generation_tab_fichier(tuile, level, edit = False)
-			refresh_initialiation(tableau, level, nbPaire, startmenu)
+			tableau = generation_tab_fichier(tuile, level, edit)
+			refresh_initialiation(tableau, level, nbPaire, startmenu, edit)
 			select = (-1, -1)
 			commencer = 0
 		for event in pygame.event.get():	#On parcours la liste de tous les événements reçus
@@ -622,7 +596,7 @@ def start(level = 0, edit = False):
 						time.sleep(0.2)
 						start(level)
 					elif (restartRect.collidepoint(event.pos)):
-						start(level)
+						start(level, edit, True)
 					elif tuile_position(event.pos, tableau) == 0 or select == tuile_position(event.pos, tableau):
 						b = refresh(tableau, level, nbPaire)
 						select = (-1, -1)
@@ -646,13 +620,10 @@ def start(level = 0, edit = False):
 								tmin +=1
 								tsec -= 60
 							gameOverScreen(tmin, tsec, nbclick, nbPaire)
-							nextlvlSurf = DISPLAYFONT.render('Next Level', True, WHITE)
-							nextlvlRect = nextlvlSurf.get_rect()
-							nextlvlRect.topleft = (WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+44)
-							fenetre.blit(nextlvlSurf, nextlvlRect)
+							nextlvl  = buttonmj('Next Level', WINDOWWIDTH - 120, 5*WINDOWHEIGHT/8+44)
 							pygame.display.flip()
 							while True:
-								eventInGame(startmenu, level, b[0] , b[1], nextlvlRect)
+								eventInGame(startmenu, level, b[0] , b[1], edit, nextlvl[1])
 							
 						b = refresh(tableau, level, nbPaire)
 					else :
@@ -669,7 +640,7 @@ def start(level = 0, edit = False):
 
 	print('EXIT')
 	
-def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
+def eventInGame(startmenu, level, menuRect, restartRect, edit, nextlvlRect = 0):
 	for event in pygame.event.get():
 		if event.type == KEYDOWN:
 			if event.key == pygame.K_s:
@@ -684,9 +655,12 @@ def eventInGame(startmenu, level, menuRect, restartRect, nextlvlRect = 0):
 			if (menuRect.collidepoint(event.pos)):
 				displayStartmenu()
 			elif (restartRect.collidepoint(event.pos)):
-				start(level)
-			elif ((nextlvlRect.collidepoint(event.pos))and (nextlvlRect !=0)):
-				start(level+1)
+				start(level, edit, True)
+			elif ((nextlvlRect !=0) and (nextlvlRect.collidepoint(event.pos))):
+				if ((level+1)<10):
+					start(level+1)
+				else:
+					start(level)
 				
 
 
@@ -707,14 +681,11 @@ startmenu = 0
 nbclick = 0
 nbPaire = 0
 
-buttonsGame = [0]*3
 
 
 
-
-
-menuRect = 0
-restartRect = 0
+menuRect = pygame.Rect(WINDOWWIDTH - 120,5*WINDOWHEIGHT/8,50,20)
+restartRect = pygame.Rect(WINDOWWIDTH - 120,5*WINDOWHEIGHT/8+22,100,20)
 if __name__ == '__main__':
 	start()
 
