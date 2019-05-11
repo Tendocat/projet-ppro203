@@ -684,10 +684,8 @@ nbPaire = 0
 
 
 
-
-
-menuRect = 0
-restartRect = 0
+menuRect = pygame.Rect(WINDOWWIDTH - 120,5*WINDOWHEIGHT/8,50,20)
+restartRect = pygame.Rect(WINDOWWIDTH - 120,5*WINDOWHEIGHT/8+22,100,20)
 if __name__ == '__main__':
 	start()
 
