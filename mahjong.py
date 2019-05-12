@@ -102,6 +102,8 @@ def creer_level(level = 0):
 #param tuiles : le tableau contenant les images prechargées
 #param L, H la largeur et hauteur d'une tuile
 def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
+	global global_tableau_nb_cases
+	global_tableau_nb_cases = 0
 	tableau = []
 	if not edit:
 		nom_fichier = 'levels/' + (str)(nom_fichier) + '.txt'
@@ -190,7 +192,9 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 							t.append([tuile[32], (x,y)])
 						if ligne[col] == '4':
 							t.append([tuile[33], (x,y)])
-							
+					else:
+						global_tableau_nb_cases-=1
+					global_tableau_nb_cases+=1
 					col += 1
 			tableau.append(t)
 	return tableau
@@ -239,7 +243,8 @@ def tuile_position(p, tableau):
 
 	
 def displayScore(nb, level):
-	score = buttonmj('Score: %d' % (nb), WINDOWWIDTH - 120, 35)
+	global global_tableau_nb_cases
+	score = buttonmj('{}%'.format((int)(nb*2*100/global_tableau_nb_cases)), WINDOWWIDTH - 120, 35)
 	clvl  = buttonmj('Level %d' %(level), WINDOWWIDTH - 120, 10)
 	
 	
