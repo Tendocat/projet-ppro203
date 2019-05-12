@@ -80,19 +80,19 @@ def creer_level(level = 0):
 	if level == 0:
 		random_tableau_fichier(4,3,"levels/0.txt")
 	elif level == 1:
-		random_tableau_fichier(6,4,"levels/1.txt")
+		random_tableau_fichier(5,4,"levels/1.txt")
 	elif level == 2:
-		random_tableau_fichier(10,4,"levels/2.txt")
+		random_tableau_fichier(6,4,"levels/2.txt")
 	elif level == 3:
 		random_tableau_fichier(6,5,"levels/3.txt")
 	elif level == 4:
-		random_tableau_fichier(10,5,"levels/4.txt")
+		random_tableau_fichier(8,5,"levels/4.txt")
 	elif level == 5:
-		random_tableau_fichier(6,6,"levels/5.txt")
+		random_tableau_fichier(7,6,"levels/5.txt")
 	elif level == 6:
-		random_tableau_fichier(10,6,"levels/6.txt")
+		random_tableau_fichier(9,6,"levels/6.txt")
 	elif level == 7:
-		random_tableau_fichier(6,7,"levels/7.txt")
+		random_tableau_fichier(8,7,"levels/7.txt")
 	elif level == 8:
 		random_tableau_fichier(10,7,"levels/8.txt")
 	elif level == 9:
@@ -550,7 +550,7 @@ def gameOverScreen(tmin, tsec, nbclick, nbPaire):
 	timeRect = timeSurf.get_rect()
 	timeRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3)
 	fenetre.blit(timeSurf, timeRect)
-	ttSurf = DISPLAYFONT.render('Temps par tuiles : %d' % (tsec/34), True, WHITE)
+	ttSurf = DISPLAYFONT.render('Temps par tuiles : %.3f' % ((tsec+tmin*60)/global_tableau_nb_cases), True, WHITE)
 	ttRect = timeSurf.get_rect()
 	ttRect.topleft = (WINDOWWIDTH/5, WINDOWHEIGHT/3+25)
 	fenetre.blit(ttSurf, ttRect)
