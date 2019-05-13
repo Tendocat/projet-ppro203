@@ -63,7 +63,7 @@ def random_tableau_fichier(ligne = 8, colonne = 6, nom_fichier = 'levels/random.
 					if b == 0:
 						ll = l
 					elif b == 1:
-						ll = colonne-l
+						ll = ligne-1-l
 				
 					if tableau[cc][ll] == 0:
 						tableau[cc][ll] = ajouter
