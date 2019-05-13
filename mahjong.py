@@ -197,6 +197,8 @@ def generation_tab_fichier(tuile, nom_fichier = 'levels/0', edit = False):
 					global_tableau_nb_cases+=1
 					col += 1
 			tableau.append(t)
+	if global_tableau_nb_cases == 0:
+		global_tableau_nb_cases = 1
 	return tableau
 
 #refresh initialiation affichage tuiles differe	
@@ -576,6 +578,7 @@ def start(level = 0, edit = False, again = False):
 	global nbPaire
 	global menuRect
 	global restartRect
+	global global_tableau_nb_cases
 	nbPaire = 0
 	nbclick = 0
 	debut = time.time() #Temps de début de la partie
@@ -585,6 +588,8 @@ def start(level = 0, edit = False, again = False):
 			displayStartmenu()
 		if commencer:
 			tableau = generation_tab_fichier(tuile, level, edit)
+			if global_tableau_nb_cases == 1:
+				displayStartmenu()
 			refresh_initialiation(tableau, level, nbPaire, startmenu, edit)
 			select = (-1, -1)
 			commencer = 0
@@ -609,7 +614,7 @@ def start(level = 0, edit = False, again = False):
 						select = tuile_position(event.pos, tableau)
 						fenetre.blit(select_surface, select)
 						pygame.display.flip()
-					elif egal(select, tuile_position(event.pos, tableau), tableau): #remove tuile et score up
+					elif egal(select, tuile_position(event.pos, tableau), tableau):
 						#test si chaque ligne est vide
 						over = 1
 						for tab in tableau:
